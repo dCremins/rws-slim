@@ -1,0 +1,46 @@
+{% for group in groups %}
+
+	<div class="side-menu" id="group-{{group.id}}" >
+		{% for field in fields %}
+
+			{% if field.type == 'optional' %}
+				<div class="input-container">
+						{% for option in field.options %}
+							<label class="signs">
+								<input name="input-{{group.id}}" class="sign" type="checkbox" value="work" onclick="{{option.function}}('{{group.id}}', this)" />
+								{{option.name}}
+								<span class="checkmark {{group.color}}-check"></span>
+							</label>
+						{% endfor %}
+				</div>
+			{% endif %}
+
+			{% if field.type == 'input' %}
+				<div class="input-container">
+					<div class="inputs {{group.color}}">
+						<label>{{field.name}}</label>
+						<input name="input-{{group.id}}" type="text" id="{{field.id}}{{group.id}}" value="" onfocus="focusChange(this)" onblur="focusStop(this)"/>
+					</div>
+				</div>
+			{% endif %}
+
+			{% if field.type == 'sign' %}
+				<div class="input-container">
+					{% for option in field.options %}
+						<label class="signs">
+							<input name="input-{{group.id}}" class="sign" type="checkbox" value="{{option.value}}" onclick="signArray('{{group.id}}', this)" />
+							{{option.name}}
+							<span class="checkmark {{group.color}}-check"></span>
+						</label>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+		{% endfor %}
+	  <div class="input-container">
+			<button class="{{group.color}}" onclick="renderCones({{group.id}}, {{group.color}})">Place Cones</button>
+			<button class="{{group.color}}" onclick="clearCones({{group.id}}, true)">Clear Cones</button>
+		</div>
+	</div>
+
+{% endfor %}

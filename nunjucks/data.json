@@ -1,0 +1,146 @@
+{
+	"title": "EWS App",
+	"stylesheet": "main.css",
+	"includes": "includes.min.js",
+	"javascript": "bundled.min.js",
+	"groups": [
+		{
+			"id": "1",
+			"color": "red"
+		},
+		{
+			"id": "2",
+			"color": "purple"
+		},
+		{
+			"id": "3",
+			"color": "blue"
+		},
+		{
+			"id": "4",
+			"color": "green"
+		},
+		{
+			"id": "5",
+			"color": "orange"
+		},
+		{
+			"id": "6",
+			"color": "yellow"
+		}
+	],
+	"fields": [
+		{
+			"name": "Sign Spacing",
+			"id": "sign-",
+			"type": "input"
+		},
+		{
+			"name": "Transition Taper",
+			"id": "upstream-",
+			"type": "input"
+		},
+		{
+			"name": "Upstream Buffer",
+			"id": "buffer-",
+			"type": "input"
+		},
+		{
+			"name": "Downstream Buffer",
+			"id": "downbuff-",
+			"type": "input"
+		},
+		{
+			"name": "Downstream Taper",
+			"id": "downstream-",
+			"type": "input"
+		},
+		{
+			"type": "optional",
+			"options": [
+				{
+					"name": "Include Arrow Boards?",
+					"function": "arrowArray"
+				},
+				{
+					"name": "Include End Road Work Sign?",
+					"function": "endArray"
+				}
+			]
+		},
+		{
+			"type": "sign",
+			"options": [
+				{
+					"name": "Worker Symbol",
+					"value": "worker"
+				},
+				{
+					"name": "Flagger Symbol",
+					"value": "flagger"
+				},
+				{
+					"name": "Merge Left Symbol",
+					"value": "left"
+				},
+				{
+					"name": "Merge Right Symbol",
+					"value": "right"
+				},
+				{
+					"name": "Be Prepared to Stop",
+					"value": "stop"
+				},
+				{
+					"name": "One Lane Road Ahead",
+					"value": "lane"
+				},
+				{
+					"name": "Road Machinery Ahead",
+					"value": "machine"
+				},
+				{
+					"name": "Road Work Ahead",
+					"value": "road"
+				}
+			]
+		},
+		{
+			"type": "sign",
+			"options": [
+				{
+					"name": "Road Construction Ahead",
+					"value": "const"
+				},
+				{
+					"name": "Utility Work Ahead",
+					"value": "utility"
+				},
+				{
+					"name": "Right Lane Closed Ahead",
+					"value": "rLane"
+				},
+				{
+					"name": "Men at Work",
+					"value": "men"
+				},
+				{
+					"name": "Left Lane Closed Ahead",
+					"value": "lLane"
+				},
+				{
+					"name": "Flag Men Ahead",
+					"value": "flag"
+				},
+				{
+					"name": "Flagger Ahead",
+					"value": "fAhead"
+				},
+				{
+					"name": "Lane Closed Ahead",
+					"value": "laneAhead"
+				}
+			]
+		}
+	]
+}

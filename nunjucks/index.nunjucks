@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+	<header>
+		<title>{{ title }}</title>
+	  <link rel="stylesheet" type="text/css" href="{{ stylesheet }}" />
+	</header>
+	<body>
+		<div class="wrapper">
+			{% include 'nav.nunjucks' %}
+			<div class="container" id="container">
+			</div>
+		</div>
+		{% include 'menu.nunjucks' %}
+
+	  <footer>
+			<script defer="defer" src="{{ includes }}"></script>
+			<script defer="defer" src="{{ javascript }}"></script>
+	  </footer>
+	</body>
+</html>
