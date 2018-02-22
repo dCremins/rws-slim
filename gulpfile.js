@@ -44,6 +44,10 @@ var paths = {
 		src: 'images/*',
 		dest: 'dist/images'
 	},
+	move: {
+		src: 'asis/**/*',
+		dest: 'dist/'
+	},
 	html: {
 		src: 'nunjucks/*',
 		templates: 'nunjucks/templates',
@@ -122,18 +126,14 @@ gulp.task('images', () => {
   .pipe(gulp.dest(paths.images.dest))
 })
 
-/* 5. HTML */
-/*
-gulp.task('html', () => {
-	return pump([
-			gulp.src(paths.html.src),
-    	htmlmin({collapseWhitespace: true}),
-			gulp.dest(paths.html.dest)
-		],
-		cb
-	)
+gulp.task('move', () => {
+	return gulp.src(paths.move.src)
+	.pipe(plumber())
+  .pipe(gulp.dest(paths.move.dest))
 })
-*/
+
+/* 5. HTML */
+
 gulp.task('html', (cb) => {
   return gulp.src(paths.html.src+'.nunjucks')
 	.pipe(plumber())
@@ -143,7 +143,7 @@ gulp.task('html', (cb) => {
 	.pipe(gulp.dest(paths.html.dest))
 })
 
-const html_watch = gulp.watch(paths.html.src, gulp.parallel('html'))
+const html_watch = gulp.watch(paths.html.src+'**/*', gulp.parallel('html'))
 html_watch.on('all', (path) => {
 	console.log('File ' + path + ' was changed. Running HTML Task...')
 })
@@ -164,4 +164,13 @@ gulp.task('clean', () => {
   return del(['dist/**/*'])
 })
 
-gulp.task('default', gulp.series('html', 'javascript', 'includes', 'sass', 'images', 'connect'))
+function test(done){
+  done();
+}
+test.description = 'I do nothing';
+
+gulp.task(test)
+
+gulp.task('default', gulp.series('html', 'javascript', 'includes', 'sass', 'images', 'move', function done(done){done()}))
+gulp.task('serve', gulp.series('default', 'connect'))
+gulp.task('deploy', gulp.series('clean', 'default', function done(done){done()}))

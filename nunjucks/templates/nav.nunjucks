@@ -1,6 +1,6 @@
 <div class="side" id="sidebar">
 	{% for group in groups %}
-		<a id="button-group-{{group.id}}" class="button group-{{group.id}}" onclick="slide('group-{{group.id}}')">
+		<a id="button-group-{{group.id}}" class="button group-{{group.id}}">
 			<img class="cone" src="images/cone-{{group.id}}.png" />
 		</a>
 	{% endfor %}

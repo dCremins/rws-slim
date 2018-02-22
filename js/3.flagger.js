@@ -288,13 +288,14 @@ function flagger(group, color) {
 	const shadowFlagger = new THREE.Mesh(shadow, shadows)
 	clickBox.add(shadowFlagger)
 
+	clickBox.rotation.set(0, -1.4, 0)
 	clickBox.position.set(-6, 1.48, -12)
 	clickBox.name = (group+'-flagger1')
 	scene.add(clickBox)
 	flaggers.push(clickBox)
 
 	const clickBox2 = clickBox.clone(true)
-	clickBox2.rotation.set(0, 2.4, 0)
+	clickBox2.rotation.set(0, 1.8, 0)
 	clickBox2.position.set(10, 1.48, -28)
 	clickBox2.name = (group+'-flagger2')
 	scene.add(clickBox2)

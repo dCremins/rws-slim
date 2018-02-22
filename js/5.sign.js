@@ -2,7 +2,6 @@ const signs = [[], [], [], [], [], [], []]
 
 function signArray(group, checkbox) {
 	const idx = signs[group].indexOf(checkbox.value)
-
 	if (idx !== -1) {				 								// If already in array
 		signs[group].splice(idx, 1) 					// Make sure we remove it
 	}
@@ -15,7 +14,6 @@ function signArray(group, checkbox) {
 function signSpace(color, group) {
 	const faces = new THREE.Geometry()
 	const bases = new THREE.Geometry()
-	const shadow = new THREE.Geometry()
 	const materials = [
 		color,										// 0
 		workerSignMaterial,				// 1
@@ -66,6 +64,7 @@ function signSpace(color, group) {
 				geometry.rotateX(-1.6)
 				let textMesh = new THREE.Mesh(geometry, white)
 				textMesh.position.set((xPos + 4), .5, (-9 + (group * 4)))
+				textMesh.name = 'spacing-' + group
 				scene.add(textMesh)
 				render()
 		} )
@@ -132,7 +131,6 @@ function signSpace(color, group) {
 			signBase.faces[j].materialIndex = x;
 		}
 		faces.mergeMesh(new THREE.Mesh(signBase))
-		shadow.merge(signBase)
 		bases.merge(signColor)
 
 		signBase.translate(-6.5, 0, 0)
@@ -140,9 +138,6 @@ function signSpace(color, group) {
 	} // End For
 
 	const combinedBase = new THREE.Mesh(bases, color)
-	shadow.merge(bases)
-	const combinedShadow = new THREE.Mesh(shadow, shadows)
-	combinedBase.add(combinedShadow)
 
 	//meshes = new THREE.BufferGeometry().fromGeometry(meshes)
 	const combinedMesh = new THREE.Mesh(faces, materials)

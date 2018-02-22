@@ -36,11 +36,11 @@ function initRoad() {
 /* Work Zone Cones */
 	const coneCore = coneGeometry.clone(true)
 	const stripeCore = stripeGeometry.clone(true)
-	coneCore.translate(-40, 0.75, -19)
+	coneCore.translate(0, 0.75, -19)
 	coneDefault.merge(coneCore)
-	stripeCore.translate(-40, 0.75, -19)
+	stripeCore.translate(0, 0.75, -19)
 	guard.merge(stripeCore)
-	for (let i = 1.5; i <= 80; i += 2) {
+	for (let i = 1.5; i <= 12; i += 2) {
 		coneCore.translate(2, 0, 0)
 		coneDefault.merge(coneCore)
 		stripeCore.translate(2, 0, 0)
@@ -60,7 +60,7 @@ function initRoad() {
 	grass.add(outside)
 
 	const floorShadows = new THREE.Mesh(floor, shadows)
-	floorShadows.position.set(0, 0.0003, -13.8)
+	floorShadows.position.set(0, 0.0003, 0)
 	floorShadows.receiveShadow = true
 	scene.add(floorShadows)
 	objectPlane = floorShadows

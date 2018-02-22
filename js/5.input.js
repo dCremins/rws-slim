@@ -18,6 +18,10 @@ const clearCones = (group, close) => {
 	if (scene.getObjectByName(group+'-arrow2')) {
 		scene.remove(scene.getObjectByName(group+'-arrow2'))
 	}
+	if (scene.getObjectByName('spacing-' + group)) {
+		scene.remove(scene.getObjectByName('spacing-' + group))
+	}
+
 	if (close) {
 		let allSigns = document.getElementsByName('input-'+group)
 		for (let i=0; i < allSigns.length; i++) {
@@ -30,11 +34,18 @@ const clearCones = (group, close) => {
 		}
 		slide('group-' + group)
 	}
-	flaggers = []
+let newFlaggers = []
+	for (let i=0; i<flaggers.length;i++){
+		if (flaggers[i].name !== (group+'-flagger1') && flaggers[i].name !== (group+'-flagger2')) {
+			newFlaggers.push(flaggers[i])
+		}
+	}
+flaggers = newFlaggers
 	render()
 }
 
 const renderCones = (group, color) => {
+
 	clearCones(group, false)
 	const shadow = new THREE.Geometry()
 	const cone = coneGeometry.clone(true)
@@ -42,7 +53,6 @@ const renderCones = (group, color) => {
 	const coneGroup = new THREE.Geometry()
 	const stripeGroup = new THREE.Geometry()
 	let initialX
-
 
 /* Buffer */
 

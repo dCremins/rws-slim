@@ -23,12 +23,12 @@ let testPoint = null
 const glow = new THREE.MeshLambertMaterial({color: 0xB78DD1, emissive:0x333333})
 
 // Colors
-const red = new THREE.MeshLambertMaterial({color: 0xd16262})
-const green = new THREE.MeshLambertMaterial({color: 0x5ca87a})
-const blue = new THREE.MeshLambertMaterial({color: 0x199dc1})
-const orange = new THREE.MeshLambertMaterial({color: 0xe09d18})
-const yellow = new THREE.MeshLambertMaterial({color: 0xd3ba00})
-const purple = new THREE.MeshLambertMaterial({color: 0xB78DD1})
+const red = new THREE.MeshLambertMaterial({color: 0xf87676})
+const green = new THREE.MeshLambertMaterial({color: 0x78c789})
+const blue = new THREE.MeshLambertMaterial({color: 0x22b8e2})
+const orange = new THREE.MeshLambertMaterial({color: 0xf6b331})
+const yellow = new THREE.MeshLambertMaterial({color: 0xfddb4c})
+const purple = new THREE.MeshLambertMaterial({color: 0xb78dd1})
 
 const white = new THREE.MeshLambertMaterial({color: 0xFFFFFF})
 const gray = new THREE.MeshLambertMaterial({color: 0x555555})

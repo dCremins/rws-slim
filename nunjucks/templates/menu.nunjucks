@@ -7,7 +7,7 @@
 				<div class="input-container">
 						{% for option in field.options %}
 							<label class="signs">
-								<input name="input-{{group.id}}" class="sign" type="checkbox" value="work" onclick="{{option.function}}('{{group.id}}', this)" />
+								<input id="option-{{group.id}}-{{option.function}}" name="input-{{group.id}}" class="sign" type="checkbox" value="work" />
 								{{option.name}}
 								<span class="checkmark {{group.color}}-check"></span>
 							</label>
@@ -19,7 +19,7 @@
 				<div class="input-container">
 					<div class="inputs {{group.color}}">
 						<label>{{field.name}}</label>
-						<input name="input-{{group.id}}" type="text" id="{{field.id}}{{group.id}}" value="" onfocus="focusChange(this)" onblur="focusStop(this)"/>
+						<input id="{{field.id}}{{group.id}}" name="input-{{group.id}}" type="text" value="" onfocus="focusChange(this)" onblur="focusStop(this)"/>
 					</div>
 				</div>
 			{% endif %}
@@ -28,7 +28,7 @@
 				<div class="input-container">
 					{% for option in field.options %}
 						<label class="signs">
-							<input name="input-{{group.id}}" class="sign" type="checkbox" value="{{option.value}}" onclick="signArray('{{group.id}}', this)" />
+							<input id="sign-{{group.id}}-{{option.value}}" name="input-{{group.id}}" class="sign" type="checkbox" value="{{option.value}}"/>
 							{{option.name}}
 							<span class="checkmark {{group.color}}-check"></span>
 						</label>
@@ -38,8 +38,8 @@
 
 		{% endfor %}
 	  <div class="input-container">
-			<button class="{{group.color}}" onclick="renderCones({{group.id}}, {{group.color}})">Place Cones</button>
-			<button class="{{group.color}}" onclick="clearCones({{group.id}}, true)">Clear Cones</button>
+			<button id="place-{{group.id}}" class="{{group.color}}">Place Cones</button>
+			<button id="clear-{{group.id}}" class="{{group.color}}">Clear Cones</button>
 		</div>
 	</div>
 
