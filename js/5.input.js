@@ -35,6 +35,7 @@ const clearCones = (group, close) => {
 				allSigns[i].value = '';
 			}
 		}
+		signs[group] = []
 		slide('group-' + group)
 	}
 let newFlaggers = []
