@@ -30,15 +30,15 @@ const uglifyjs = require('uglify-es')
 var paths = {
 	styles: {
 		src: 'scss/*.scss',
-		dest: 'dist'
+		dest: 'dist/css'
 	},
 	scripts: {
 		src: 'js/*.js',
-		dest: 'dist'
+		dest: 'dist/js'
 	},
 	includes: {
 		src: 'js/includes/*.js',
-		dest: 'dist'
+		dest: 'dist/js'
 	},
 	images: {
 		src: 'images/*',

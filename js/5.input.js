@@ -21,6 +21,9 @@ const clearCones = (group, close) => {
 	if (scene.getObjectByName('spacing-' + group)) {
 		scene.remove(scene.getObjectByName('spacing-' + group))
 	}
+	if (scene.getObjectByName('signGroup-' + group)) {
+		scene.remove(scene.getObjectByName('signGroup-' + group))
+	}
 
 	if (close) {
 		let allSigns = document.getElementsByName('input-'+group)
@@ -36,7 +39,10 @@ const clearCones = (group, close) => {
 	}
 let newFlaggers = []
 	for (let i=0; i<flaggers.length;i++){
-		if (flaggers[i].name !== (group+'-flagger1') && flaggers[i].name !== (group+'-flagger2')) {
+		if (flaggers[i].name !== (group+'-flagger1')
+			&& flaggers[i].name !== (group+'-flagger2')
+			&& flaggers[i].name !== (group+'-arrow1')
+			&& flaggers[i].name !== (group+'-arrow2')) {
 			newFlaggers.push(flaggers[i])
 		}
 	}
