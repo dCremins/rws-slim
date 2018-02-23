@@ -19,7 +19,7 @@
 				<div class="input-container">
 					<div class="inputs {{group.color}}">
 						<label>{{field.name}}</label>
-						<input id="{{field.id}}{{group.id}}" name="input-{{group.id}}" type="text" value="" onfocus="focusChange(this)" onblur="focusStop(this)"/>
+						<input id="{{field.id}}{{group.id}}" name="input-{{group.id}}" type="text" value="" />
 					</div>
 				</div>
 			{% endif %}

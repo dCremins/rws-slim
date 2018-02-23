@@ -42,4 +42,19 @@ for (let i=1; i<=6; i++) {
 		document.getElementById('sign-'+i+'-flag').addEventListener('change', ()=>{signArray(i, document.getElementById('sign-'+i+'-flag'))})
 		document.getElementById('sign-'+i+'-fAhead').addEventListener('change', ()=>{signArray(i, document.getElementById('sign-'+i+'-fAhead'))})
 		document.getElementById('sign-'+i+'-laneAhead').addEventListener('change', ()=>{signArray(i, document.getElementById('sign-'+i+'-laneAhead'))})
+
+		document.getElementById('sign-'+i).addEventListener('focus', ()=>{focusChange(document.getElementById('sign-'+i))})
+		document.getElementById('sign-'+i).addEventListener('blur', ()=>{focusStop(document.getElementById('sign-'+i))})
+
+		document.getElementById('upstream-'+i).addEventListener('focus', ()=>{focusChange(document.getElementById('upstream-'+i))})
+		document.getElementById('upstream-'+i).addEventListener('blur', ()=>{focusStop(document.getElementById('upstream-'+i))})
+
+		document.getElementById('buffer-'+i).addEventListener('focus', ()=>{focusChange(document.getElementById('buffer-'+i))})
+		document.getElementById('buffer-'+i).addEventListener('blur', ()=>{focusStop(document.getElementById('buffer-'+i))})
+
+		document.getElementById('downbuff-'+i).addEventListener('focus', ()=>{focusChange(document.getElementById('downbuff-'+i))})
+		document.getElementById('downbuff-'+i).addEventListener('blur', ()=>{focusStop(document.getElementById('downbuff-'+i))})
+
+		document.getElementById('downstream-'+i).addEventListener('focus', ()=>{focusChange(document.getElementById('downstream-'+i))})
+		document.getElementById('downstream-'+i).addEventListener('blur', ()=>{focusStop(document.getElementById('downstream-'+i))})
 }
