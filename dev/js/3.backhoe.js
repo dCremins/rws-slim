@@ -3,7 +3,6 @@ function initBackHoe() {
 	const metal = new THREE.Geometry()
 	const shadowHoe = new THREE.Geometry()
 
-/* base */
 	const blockGeometry = new THREE.BoxGeometry(4, 0.5, 1.2)
 	blockGeometry.translate(0.75, 0.25, -0.5)
 	base.merge(blockGeometry)
@@ -85,19 +84,17 @@ function initBackHoe() {
 	const BackHoe = new THREE.Mesh(base, truckMaterial)
 	shadowHoe.merge(base)
 
-/* Glass */
 	const glass = new THREE.BoxGeometry(2.75, 1.75, 1.125)
-	glass.translate(.94, 1.375, -.5)
+	glass.translate(0.94, 1.375, -0.5)
 	glass.vertices[0].x -= 1.1
 	glass.vertices[1].x -= 1.1
-	glass.vertices[3].y += .15
-	glass.vertices[2].y += .15
+	glass.vertices[3].y += 0.15
+	glass.vertices[2].y += 0.15
 
 	const truckWindow = new THREE.Mesh(glass, windowColor)
 	BackHoe.add(truckWindow)
 	shadowHoe.merge(glass)
 
-/* metal */
 	let verticalBarGeometry = new THREE.BoxGeometry(0.1, 1.5, 0.1)
 	verticalBarGeometry.translate(-0.45, 1.5, 0.05)
 	metal.merge(verticalBarGeometry)

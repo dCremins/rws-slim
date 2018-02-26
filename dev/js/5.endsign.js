@@ -3,21 +3,19 @@ const end = [[], [], [], [], [], [], []]
 function endArray(group, checkbox) {
 	const idx = end[group].indexOf(checkbox.value)
 
-	if (idx !== -1) {				 								// If already in array
-		end[group].splice(idx, 1) 					// Make sure we remove it
+	if (idx !== -1) {
+		end[group].splice(idx, 1)
 	}
 
-	if (checkbox.checked) {									// If checked
-		end[group].unshift(checkbox.value)	// Add to end of array
+	if (checkbox.checked) {
+		end[group].unshift(checkbox.value)
 	}
 }
 
 function endSign(color, group) {
-	const materials = [
-		color,										// 0
-		endSignMaterial				// 1
-	]
-
+	if (end[group].length < 0) {
+		return
+	}
 	const signBase = new THREE.BoxGeometry(2.8, 2.25, 0.1)
 	signBase.rotateX(-1.6)
 	const signColor = new THREE.BoxGeometry(3.2, 3.2, 0.1)
@@ -28,12 +26,10 @@ function endSign(color, group) {
 		xPos -= 3
 	}
 
-	//signBase.rotateY(1.6)
 	signBase.translate(xPos, 0.5, (-9.75 + (group * 4)))
-	let image = new THREE.Mesh(signBase, endSignMaterial)
-	//signColor.rotateY(1.6)
+	const image = new THREE.Mesh(signBase, endSignMaterial)
 	signColor.translate(xPos, 0.48, (-10 + (group * 4)))
-	let base = new THREE.Mesh(signColor, color)
+	const base = new THREE.Mesh(signColor, color)
 	image.add(base)
 	image.name = 'signGroup-' + group
 	image.castShadow = true

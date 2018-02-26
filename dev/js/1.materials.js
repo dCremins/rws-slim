@@ -6,29 +6,24 @@ let renderer
 let ambient
 let sun
 let objectPlane
-let gpuPicker
 let flaggers = []
+const signs = [[], [], [], [], [], [], []]
 
 const container = document.getElementById('container')
 const raycaster = new THREE.Raycaster()
 const mouse = new THREE.Vector2()
-const plane = new THREE.Plane()
-const offset = new THREE.Vector3()
-const intersection = new THREE.Vector3()
-let selected = null
-let dragged = null
+const selected = null
 let hovered = null
-let testPoint = null
 
-const glow = new THREE.MeshLambertMaterial({color: 0xB78DD1, emissive:0x333333})
+const glow = new THREE.MeshLambertMaterial({color: 0xB78DD1, emissive: 0x333333})
 
 // Colors
-const red = new THREE.MeshLambertMaterial({color: 0xf87676})
-const green = new THREE.MeshLambertMaterial({color: 0x78c789})
-const blue = new THREE.MeshLambertMaterial({color: 0x22b8e2})
-const orange = new THREE.MeshLambertMaterial({color: 0xf6b331})
-const yellow = new THREE.MeshLambertMaterial({color: 0xfddb4c})
-const purple = new THREE.MeshLambertMaterial({color: 0xb78dd1})
+const red = new THREE.MeshLambertMaterial({color: 0xF87676})
+const green = new THREE.MeshLambertMaterial({color: 0x78C789})
+const blue = new THREE.MeshLambertMaterial({color: 0x22B8E2})
+const orange = new THREE.MeshLambertMaterial({color: 0xF6B331})
+const yellow = new THREE.MeshLambertMaterial({color: 0xFDDB4C})
+const purple = new THREE.MeshLambertMaterial({color: 0xB78DD1})
 
 const white = new THREE.MeshLambertMaterial({color: 0xFFFFFF})
 const gray = new THREE.MeshLambertMaterial({color: 0x555555})
@@ -102,7 +97,7 @@ const coneBottomG = new THREE.BoxGeometry(0.5, 0.06, 0.5)
 coneBottomG.translate(0, -0.23, 0)
 coneGeometry.merge(coneBottomG)
 coneGeometry.scale(1.5, 1.5, 1.5)
-coneGeometry.translate(0, .125, 0)
+coneGeometry.translate(0, 0.125, 0)
 const stripeGeometry = new THREE.CylinderGeometry(0.116, 0.155, 0.15, 32, 1, false, 0.8)
 stripeGeometry.scale(1.5, 1.5, 1.5)
-stripeGeometry.translate(0, .125, 0)
+stripeGeometry.translate(0, 0.125, 0)

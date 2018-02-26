@@ -5,7 +5,6 @@ function initTruck() {
 	const orangeGeo = new THREE.Geometry()
 	const shadow = new THREE.Geometry()
 
-	// Base
 	const nose = new THREE.BoxGeometry(1, 0.8, 1.3)
 	nose.translate(-0.6, 0, 0)
 	whiteGeo.merge(nose)
@@ -53,14 +52,11 @@ function initTruck() {
 	const truck = new THREE.Mesh(whiteGeo, white)
 	shadow.merge(whiteGeo)
 
-
 	const windshield = new THREE.BoxGeometry(1, 0.8, 1.29)
-	// X
 	windshield.vertices[4].x += 0.26
 	windshield.vertices[5].x += 0.26
 	windshield.vertices[6].x -= 0.035
 	windshield.vertices[7].x -= 0.035
-	// Y
 	windshield.vertices[0].y += 2.2
 	windshield.vertices[1].y += 2.2
 	windshield.vertices[2].y += 2.3
@@ -73,8 +69,6 @@ function initTruck() {
 	const glass = new THREE.Mesh(windshield, windowColor)
 	truck.add(glass)
 
-
-	// Inside
 	const seatButt = new THREE.BoxGeometry(0.4, 0.1, 0.4)
 	seatButt.translate(0.25, 1.6, 0.3)
 	blackGeo.merge(seatButt)
@@ -110,7 +104,6 @@ function initTruck() {
 	truck.add(accent)
 	shadow.merge(blackGeo)
 
-
 	const frontBumper = new THREE.BoxGeometry(0.4, 0.1, 1.4)
 	frontBumper.translate(-0.95, 1.05, 0)
 	frontBumper.vertices[2].x += 0.01
@@ -133,8 +126,6 @@ function initTruck() {
 	truck.add(bumpers)
 	shadow.merge(greyGeo)
 
-
-	// Back
 	const leftLight = new THREE.BoxGeometry(0.1, 0.1, 0.1)
 	leftLight.translate(2.5, 1.25, 0.45)
 	orangeGeo.merge(leftLight)

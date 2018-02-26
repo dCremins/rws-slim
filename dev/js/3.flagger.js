@@ -7,12 +7,11 @@ function flagger(group, color) {
 	const shadow = new THREE.Geometry()
 
 	const clickGeometry = new THREE.BoxGeometry(1.7, 2, 1)
-	clickGeometry.rotateY(-.5)
+	clickGeometry.rotateY(-0.5)
 	clickGeometry.center()
-	clickGeometry.translate(.05, 0, 0)
+	clickGeometry.translate(0.05, 0, 0)
 	const clickBox = new THREE.Mesh(clickGeometry, clickBoxMaterial)
 
-/* Group Color */
 	const torso = new THREE.BoxGeometry(1, 1.4, 0.8)
 	torso.translate(0, 0.1, 0)
 	torso.vertices[0].z -= 0.15
@@ -23,8 +22,8 @@ function flagger(group, color) {
 	torso.vertices[4].x += 0.15
 	torso.vertices[5].z -= 0.15
 	torso.vertices[5].x += 0.15
-	torso.rotateY(-.5)
-	torso.translate(.45, 0, .7)
+	torso.rotateY(-0.5)
+	torso.translate(0.45, 0, 0.7)
 	torso.scale(0.5, 0.5, 0.5)
 	groupColor.merge(torso)
 
@@ -33,24 +32,23 @@ function flagger(group, color) {
 	const brim = new THREE.CylinderGeometry(0.2, 0.2, 0.02, 32)
 	brim.translate(0, 0.72, 0.1)
 	dome.merge(brim)
-	dome.rotateY(-.5)
-	dome.translate(.225, 0, .345)
+	dome.rotateY(-0.5)
+	dome.translate(0.225, 0, 0.345)
 	groupColor.merge(dome)
 
-	const sign = new THREE.CylinderGeometry(.4, .4, .1, 8)
-	sign.translate(.75, .25, -.55)
+	const sign = new THREE.CylinderGeometry(0.4, 0.4, 0.1, 8)
+	sign.translate(0.75, 0.25, -0.55)
 	sign.rotateZ(1.25)
-	sign.rotateY(.75)
-	sign.rotateX(.5)
+	sign.rotateY(0.75)
+	sign.rotateX(0.5)
 	groupColor.merge(sign)
 	groupColor.center()
-	groupColor.translate(0, .2, 0)
+	groupColor.translate(0, 0.2, 0)
 	const coreColor = new THREE.Mesh(groupColor, color)
 	coreColor.castShadow = true
 	shadow.merge(groupColor)
 	clickBox.add(coreColor)
 
-/* vest */
 	const left = new THREE.BoxGeometry(0.2, 0.5, 0.4)
 	left.translate(-0.13, 0.17, 0)
 	left.vertices[0].z -= 0.05
@@ -76,15 +74,14 @@ function flagger(group, color) {
 	back.vertices[4].z += 0.05
 	back.vertices[5].z += 0.05
 	vest.merge(back)
-	vest.rotateY(-.5)
+	vest.rotateY(-0.5)
 	vest.center()
-	vest.translate(.295, -.12, .165)
+	vest.translate(0.295, -0.12, 0.165)
 	const vestBase = new THREE.Mesh(vest, orange)
 	vestBase.castShadow = true
 	shadow.merge(vest)
 	clickBox.add(vestBase)
 
-/* stripes */
 	let stripe = new THREE.BoxGeometry(0.05, 0.5, 0.001)
 	stripe.translate(-0.11, 0.17, 0.201)
 	stripe.vertices[0].z -= 0.05
@@ -159,14 +156,13 @@ function flagger(group, color) {
 	stripe.vertices[4].z += 0.02
 	stripe.vertices[5].z += 0.02
 	stripes.merge(stripe)
-	stripes.rotateY(-.5)
+	stripes.rotateY(-0.5)
 	stripes.center()
-	stripes.translate(.295, -.12, .165)
+	stripes.translate(0.295, -0.12, 0.165)
 	const vestStripes = new THREE.Mesh(stripes, yellow)
 	shadow.merge(stripes)
 	clickBox.add(vestStripes)
 
-/* pants */
 	const leftLeg = new THREE.BoxGeometry(0.5, 0.8, 0.8)
 	leftLeg.translate(-0.25, -1, 0)
 	leftLeg.vertices[0].x -= 0.1
@@ -189,16 +185,15 @@ function flagger(group, color) {
 	rightLeg.vertices[7].x += 0.3
 	rightLeg.vertices[7].z -= 0.3
 	pants.merge(rightLeg)
-	pants.rotateY(-.5)
+	pants.rotateY(-0.5)
 	pants.scale(0.5, 0.5, 0.5)
 	pants.center()
-	pants.translate(.295, -.78, .165)
+	pants.translate(0.295, -0.78, 0.165)
 	const jeans = new THREE.Mesh(pants, blue)
 	vestBase.castShadow = true
 	shadow.merge(pants)
 	clickBox.add(jeans)
 
-/* Skin */
 	const rightArm1 = new THREE.BoxGeometry(0.5, 0.4, 0.5)
 	rightArm1.translate(0.64, 0.6, 0)
 	rightArm1.vertices[0].y -= 0.1
@@ -260,27 +255,26 @@ function flagger(group, color) {
 	const head = new THREE.SphereGeometry(0.35, 32, 32)
 	head.translate(0, 1.3, 0)
 	skin.merge(head)
-	skin.rotateY(-.5)
+	skin.rotateY(-0.5)
 	skin.scale(0.5, 0.5, 0.5)
 	skin.center()
-	skin.translate(.215, .11, .155)
+	skin.translate(0.215, 0.11, 0.155)
 
-	let skinTone = ~~(Math.random() * (4 - 1))
+	const skinTone = ~~(Math.random() * (4 - 1))
 	const skins = [
 		skinTone1,
 		skinTone2,
 		skinTone3,
-		skinTone4,
+		skinTone4
 	]
 	const body = new THREE.Mesh(skin, skins[skinTone])
 	shadow.merge(skin)
 	clickBox.add(body)
 
-/* Gray */
 	const wood = new THREE.CylinderGeometry(0.05, 0.05, 2.4, 32)
 	wood.scale(0.5, 0.5, 0.5)
 	wood.center()
-	wood.translate(-.3, -0.3, -.15)
+	wood.translate(-0.3, -0.3, -0.15)
 	const stick = new THREE.Mesh(wood, gray)
 	shadow.merge(wood)
 	clickBox.add(stick)
@@ -290,15 +284,14 @@ function flagger(group, color) {
 
 	clickBox.rotation.set(0, -1.4, 0)
 	clickBox.position.set(-6, 1.48, -12)
-	clickBox.name = (group+'-flagger1')
+	clickBox.name = (group + '-flagger1')
 	scene.add(clickBox)
 	flaggers.push(clickBox)
 
 	const clickBox2 = clickBox.clone(true)
 	clickBox2.rotation.set(0, 1.8, 0)
 	clickBox2.position.set(10, 1.48, -28)
-	clickBox2.name = (group+'-flagger2')
+	clickBox2.name = (group + '-flagger2')
 	scene.add(clickBox2)
 	flaggers.push(clickBox2)
-
 }

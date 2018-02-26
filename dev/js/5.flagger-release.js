@@ -1,9 +1,8 @@
-// const canv = renderer.domElement
-// const rect = canv.getBoundingClientRect()
-
 function onDocumentMouseCancel(event) {
 	event.preventDefault()
-	if (!movingOn) {
+	if (movingOn) {
+		//
+	} else {
 		controls.enabled = true
 		hovered = null
 		canv.style.cursor = 'auto'
@@ -12,7 +11,9 @@ function onDocumentMouseCancel(event) {
 
 function onDocumentTouchEnd(event) {
 	event.preventDefault()
-	if (!movingOn) {
+	if (movingOn) {
+		//
+	} else {
 		controls.enabled = true
 		hovered = null
 		canv.style.cursor = 'auto'

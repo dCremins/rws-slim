@@ -11,10 +11,9 @@ function initWorkers()	{
 		skinTone1,
 		skinTone2,
 		skinTone3,
-		skinTone4,
+		skinTone4
 	]
 
-/* people 1 - Skin */
 	let rightArm = new THREE.BoxGeometry(1, 0.4, 0.5)
 	rightArm.translate(3.55, 1.8, 6.5)
 	rightArm.vertices[0].y -= 0.75
@@ -47,7 +46,6 @@ function initWorkers()	{
 	leftArm.vertices[6].z += 1.05
 	leftArm.rotateY(-1)
 	skin1.merge(leftArm)
-	// Head
 	const head = new THREE.SphereGeometry(0.35, 32, 32)
 	head.translate(2.7, 2.5, 6.5)
 	head.rotateY(-1)
@@ -60,9 +58,8 @@ function initWorkers()	{
 	const people = new THREE.Mesh(skin1, skins[skinTone])
 	shadow.merge(skin1)
 
-/* people 2 - Skin */
 	rightArm.rotateY(1.5)
-	rightArm.translate(-5.4, 0.1, .35)
+	rightArm.translate(-5.4, 0.1, 0.35)
 	skin2.merge(rightArm)
 
 	head.translate(4.1, 0, -1)
@@ -95,7 +92,6 @@ function initWorkers()	{
 	people.add(people2)
 	shadow.merge(skin2)
 
-/* people 3 - Skin */
 	rightArm = new THREE.BoxGeometry(1, 0.4, 0.5)
 	rightArm.translate(0.85, 1.8, 0)
 	rightArm.vertices[0].y -= 0.45
@@ -141,7 +137,6 @@ function initWorkers()	{
 	people.add(people3)
 	shadow.merge(skin3)
 
-/* Shirts */
 	const torso = new THREE.BoxGeometry(1, 1.4, 0.8)
 	torso.vertices[0].z -= 0.15
 	torso.vertices[0].x -= 0.15
@@ -166,7 +161,6 @@ function initWorkers()	{
 	people.add(tanks)
 	shadow.merge(shirt)
 
-/* Orange */
 	const vestGeometry = new THREE.Geometry()
 	const left = new THREE.BoxGeometry(0.2, 0.5, 0.4)
 	left.translate(-0.13, 0.17, 0)
@@ -221,7 +215,6 @@ function initWorkers()	{
 	people.add(vestBase)
 	shadow.merge(vest)
 
-/* Yellow */
 	const vestStripes = new THREE.Geometry()
 	const stripeFront = new THREE.BoxGeometry(0.05, 0.5, 0.001)
 	stripeFront.translate(-0.11, 0.17, 0.201)
@@ -312,7 +305,6 @@ function initWorkers()	{
 	people.add(vestStripe)
 	shadow.merge(stripes)
 
-/* Jeans */
 	const leftLeg = new THREE.BoxGeometry(0.5, 0.8, 0.8)
 	leftLeg.vertices[0].x -= 0.1
 	leftLeg.vertices[1].x -= 0.1
@@ -356,7 +348,6 @@ function initWorkers()	{
 	people.add(pants)
 	shadow.merge(jean)
 
-/* Paper */
 	const paper = new THREE.BoxGeometry(0.8, 0.6, 0.025)
 	paper.rotateX(0.3)
 	paper.rotateY(-0.3)
@@ -370,6 +361,6 @@ function initWorkers()	{
 	people.add(shadowMen)
 
 	people.castShadow = true
-	people.position.set(-2.35, -.03, -17.55)
+	people.position.set(-2.35, -0.03, -17.55)
 	scene.add(people)
 }

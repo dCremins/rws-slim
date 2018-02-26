@@ -6,9 +6,6 @@ function init() {
 	initBackHoe()
 	initTruck()
 	initWorkers()
-
-	//flagger(1, red)
-
 	initCamera()
 	initLights()
 	initRender()
@@ -20,7 +17,7 @@ function initCamera() {
 }
 
 function initLights() {
-	ambient = new THREE.HemisphereLight(0xDEEEF2, 0x665C6D, .9)
+	ambient = new THREE.HemisphereLight(0xDEEEF2, 0x665C6D, 0.9)
 	sun = new THREE.SpotLight(0xFCDC74, 0.2)
 	sun.position.set(-50, 40, -5)
 	sun.castShadow = true
@@ -39,13 +36,13 @@ function initLights() {
 function initRender() {
 	renderer = new THREE.WebGLRenderer({antialias: true})
 	renderer.setSize(window.innerWidth, window.innerHeight - 100)
-	renderer.setClearColor(0xcdf9ff, 1)
-	renderer.setPixelRatio( window.devicePixelRatio )
+	renderer.setClearColor(0xCDF9FF, 1)
+	renderer.setPixelRatio(window.devicePixelRatio)
 	renderer.shadowMap.enabled = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	container.appendChild(renderer.domElement)
 	controls = new THREE.OrbitControls(camera, renderer.domElement)
-	controls.addEventListener( 'change', render )
+	controls.addEventListener('change', render)
 
 	container.addEventListener('mousemove', onDocumentMouseMove, false)
 	container.addEventListener('mouseup', onDocumentMouseCancel, false)
