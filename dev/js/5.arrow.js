@@ -13,7 +13,7 @@ function arrowArray(group, checkbox) {
 }
 
 function arrowSign(color, group) {
-	if (arrows[group].length < 0) {
+	if (arrows[group].length <= 0) {
 		return
 	}
 	const base = new THREE.Geometry()

@@ -4,8 +4,9 @@ let camera
 let controls
 let renderer
 let ambient
-let sun
+let lightSource
 let objectPlane
+let THREE
 let flaggers = []
 const signs = [[], [], [], [], [], [], []]
 

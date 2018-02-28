@@ -24,7 +24,8 @@ function signText(group, xPos, signImages) {
 			})
 				geometry.rotateX(-1.6)
 				const textMesh = new THREE.Mesh(geometry, white)
-				textMesh.position.set((xPos + 4), 0.5, (-9 + (group * 4)))
+				const groupNumber = group * 4
+				textMesh.position.set((xPos + 4), 0.5, (-9 + groupNumber))
 				textMesh.name = 'spacing-' + group
 				scene.add(textMesh)
 				render()
@@ -66,10 +67,11 @@ function signSpace(color, group) {
 		xPos -= 3
 	}
 
+	const groupNumber = group * 4
 	signBase.rotateY(1.6)
-	signBase.translate(xPos, 0.5, (-10 + (group * 4)))
+	signBase.translate(xPos, 0.5, (-10 + groupNumber))
 	signColor.rotateY(1.6)
-	signColor.translate(xPos, 0.48, (-10 + (group * 4)))
+	signColor.translate(xPos, 0.48, (-10 + groupNumber))
 
 	signText(group, xPos, signImages)
 

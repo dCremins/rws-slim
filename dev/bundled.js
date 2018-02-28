@@ -4,8 +4,9 @@ let camera
 let controls
 let renderer
 let ambient
-let sun
+let lightSource
 let objectPlane
+let THREE
 let flaggers = []
 const signs = [[], [], [], [], [], [], []]
 
@@ -15,7 +16,10 @@ const mouse = new THREE.Vector2()
 const selected = null
 let hovered = null
 
-const glow = new THREE.MeshLambertMaterial({color: 0xB78DD1, emissive: 0x333333})
+const glow = new THREE.MeshLambertMaterial({
+	color: 0xB78DD1,
+	emissive: 0x333333
+})
 
 // Colors
 const red = new THREE.MeshLambertMaterial({color: 0xF87676})
@@ -30,8 +34,16 @@ const gray = new THREE.MeshLambertMaterial({color: 0x555555})
 const palegray = new THREE.MeshLambertMaterial({color: 0x87836E})
 // Scenery
 const shadows = new THREE.ShadowMaterial({opacity: 0.3})
-const windowColor = new THREE.MeshLambertMaterial({color: 0xD0DDE3, transparent: true, opacity: 0.5})
-const clickBoxMaterial = new THREE.MeshLambertMaterial({color: 0xD0DDE3, transparent: true, opacity: 0})
+const windowColor = new THREE.MeshLambertMaterial({
+	color: 0xD0DDE3,
+	transparent: true,
+	opacity: 0.5
+})
+const clickBoxMaterial = new THREE.MeshLambertMaterial({
+	color: 0xD0DDE3,
+	transparent: true,
+	opacity: 0
+})
 const truckMaterial = new THREE.MeshLambertMaterial({color: 0xEF8547})
 // Skin
 const skinTone1 = new THREE.MeshLambertMaterial({color: 0x8D5524}) // Brown
@@ -53,13 +65,17 @@ const rightSign = new THREE.TextureLoader().load('images/sign-04.png')
 const rightSignMaterial = new THREE.MeshBasicMaterial({map: rightSign})
 // Be Prepared to Stop
 const prepareStopSign = new THREE.TextureLoader().load('images/sign-05.png')
-const prepareStopSignMaterial = new THREE.MeshBasicMaterial({map: prepareStopSign})
+const prepareStopSignMaterial = new THREE.MeshBasicMaterial({
+	map: prepareStopSign
+})
 // One Lane Road Ahead
 const oneLaneSign = new THREE.TextureLoader().load('images/sign-06.png')
 const oneLaneSignMaterial = new THREE.MeshBasicMaterial({map: oneLaneSign})
 // Road Machinery Ahead
 const machineAheadSign = new THREE.TextureLoader().load('images/sign-07.png')
-const machineAheadSignMaterial = new THREE.MeshBasicMaterial({map: machineAheadSign})
+const machineAheadSignMaterial = new THREE.MeshBasicMaterial({
+	map: machineAheadSign
+})
 // Road Work Ahead
 const workAheadSign = new THREE.TextureLoader().load('images/sign-08.png')
 const workAheadSignMaterial = new THREE.MeshBasicMaterial({map: workAheadSign})
@@ -92,13 +108,29 @@ const endWorkSign = new THREE.TextureLoader().load('images/sign-17.png')
 const endSignMaterial = new THREE.MeshBasicMaterial({map: endWorkSign})
 
 // Geometry
-const coneGeometry = new THREE.CylinderGeometry(0.07, 0.2, 0.5, 32, 0.8, false, 0.8)
+const coneGeometry = new THREE.CylinderGeometry(
+	0.07,
+	0.2,
+	0.5,
+	32,
+	0.8,
+	false,
+	0.8
+)
 const coneBottomG = new THREE.BoxGeometry(0.5, 0.06, 0.5)
 coneBottomG.translate(0, -0.23, 0)
 coneGeometry.merge(coneBottomG)
 coneGeometry.scale(1.5, 1.5, 1.5)
 coneGeometry.translate(0, 0.125, 0)
-const stripeGeometry = new THREE.CylinderGeometry(0.116, 0.155, 0.15, 32, 1, false, 0.8)
+const stripeGeometry = new THREE.CylinderGeometry(
+	0.116,
+	0.155,
+	0.15,
+	32,
+	1,
+	false,
+	0.8
+)
 stripeGeometry.scale(1.5, 1.5, 1.5)
 stripeGeometry.translate(0, 0.125, 0)
 
@@ -136,25 +168,30 @@ function init() {
 }
 
 function initCamera() {
-	camera = new THREE.PerspectiveCamera(60, ((window.innerWidth) / (window.innerHeight - 100)), 1, 100)
+	camera = new THREE.PerspectiveCamera(
+		60,
+		window.innerWidth / (window.innerHeight - 100),
+		1,
+		100
+	)
 	camera.position.set(0, 45, 25)
 }
 
 function initLights() {
 	ambient = new THREE.HemisphereLight(0xDEEEF2, 0x665C6D, 0.9)
-	sun = new THREE.SpotLight(0xFCDC74, 0.2)
-	sun.position.set(-50, 40, -5)
-	sun.castShadow = true
-	sun.shadow.camera.left = -10
-	sun.shadow.camera.right = 10
-	sun.shadow.camera.top = 10
-	sun.shadow.camera.bottom = -10
-	sun.shadow.camera.near = 0.1
-	sun.shadow.camera.far = 1000
-	sun.shadow.mapSize.width = 2048
-	sun.shadow.mapSize.height = 2048
+	lightSource = new THREE.SpotLight(0xFCDC74, 0.2)
+	lightSource.position.set(-50, 40, -5)
+	lightSource.castShadow = true
+	lightSource.shadow.camera.left = -10
+	lightSource.shadow.camera.right = 10
+	lightSource.shadow.camera.top = 10
+	lightSource.shadow.camera.bottom = -10
+	lightSource.shadow.camera.near = 0.1
+	lightSource.shadow.camera.far = 1000
+	lightSource.shadow.mapSize.width = 2048
+	lightSource.shadow.mapSize.height = 2048
 	scene.add(ambient)
-	scene.add(sun)
+	scene.add(lightSource)
 }
 
 function initRender() {
@@ -742,12 +779,7 @@ function flagger(group, color) {
 	skin.translate(0.215, 0.11, 0.155)
 
 	const skinTone = ~~(Math.random() * (4 - 1))
-	const skins = [
-		skinTone1,
-		skinTone2,
-		skinTone3,
-		skinTone4
-	]
+	const skins = [skinTone1, skinTone2, skinTone3, skinTone4]
 	const body = new THREE.Mesh(skin, skins[skinTone])
 	shadow.merge(skin)
 	clickBox.add(body)
@@ -765,14 +797,14 @@ function flagger(group, color) {
 
 	clickBox.rotation.set(0, -1.4, 0)
 	clickBox.position.set(-6, 1.48, -12)
-	clickBox.name = (group + '-flagger1')
+	clickBox.name = group + '-flagger1'
 	scene.add(clickBox)
 	flaggers.push(clickBox)
 
 	const clickBox2 = clickBox.clone(true)
 	clickBox2.rotation.set(0, 1.8, 0)
 	clickBox2.position.set(10, 1.48, -28)
-	clickBox2.name = (group + '-flagger2')
+	clickBox2.name = group + '-flagger2'
 	scene.add(clickBox2)
 	flaggers.push(clickBox2)
 }
@@ -993,7 +1025,7 @@ function initTruck() {
 	scene.add(truck)
 }
 
-function initWorkers()	{
+function initWorkers() {
 	const skin1 = new THREE.Geometry()
 	const skin2 = new THREE.Geometry()
 	const skin3 = new THREE.Geometry()
@@ -1002,12 +1034,7 @@ function initWorkers()	{
 	const jean = new THREE.Geometry()
 	const shirt = new THREE.Geometry()
 	const shadow = new THREE.Geometry()
-	const skins = [
-		skinTone1,
-		skinTone2,
-		skinTone3,
-		skinTone4
-	]
+	const skins = [skinTone1, skinTone2, skinTone3, skinTone4]
 
 	let rightArm = new THREE.BoxGeometry(1, 0.4, 0.5)
 	rightArm.translate(3.55, 1.8, 6.5)
@@ -1390,17 +1417,19 @@ const arrows = [[], [], [], [], [], [], []]
 function arrowArray(group, checkbox) {
 	const idx = arrows[group].indexOf(checkbox.value)
 
-	if (idx !== -1) {				 								// If already in array
-		arrows[group].splice(idx, 1) 					// Make sure we remove it
+	if (idx !== -1) {
+		// If already in array
+		arrows[group].splice(idx, 1) // Make sure we remove it
 	}
 
-	if (checkbox.checked) {									// If checked
-		arrows[group].unshift(checkbox.value)	// Add to end of array
+	if (checkbox.checked) {
+		// If checked
+		arrows[group].unshift(checkbox.value) // Add to end of array
 	}
 }
 
 function arrowSign(color, group) {
-	if (arrows[group].length < 0) {
+	if (arrows[group].length <= 0) {
 		return
 	}
 	const base = new THREE.Geometry()
@@ -1507,12 +1536,12 @@ function arrowSign(color, group) {
 	const sign2 = sign.clone()
 	clickBox2.add(sign2)
 
-	clickBox.name = (group + '-arrow1')
+	clickBox.name = group + '-arrow1'
 	clickBox.position.set(-1, 2.3, -16)
 	scene.add(clickBox)
 	flaggers.push(clickBox)
 
-	clickBox2.name = (group + '-arrow2')
+	clickBox2.name = group + '-arrow2'
 	clickBox2.rotation.set(0, -0.8, 0)
 	clickBox2.position.set(10, 2.3, -16)
 	scene.add(clickBox2)
@@ -1534,7 +1563,7 @@ function endArray(group, checkbox) {
 }
 
 function endSign(color, group) {
-	if (end[group].length < 0) {
+	if (end[group].length <= 0) {
 		return
 	}
 	const signBase = new THREE.BoxGeometry(2.8, 2.25, 0.1)
@@ -1547,9 +1576,10 @@ function endSign(color, group) {
 		xPos -= 3
 	}
 
-	signBase.translate(xPos, 0.5, (-9.75 + (group * 4)))
+	const groupNumber = group * 4
+	signBase.translate(xPos, 0.5, -9.75 + groupNumber)
 	const image = new THREE.Mesh(signBase, endSignMaterial)
-	signColor.translate(xPos, 0.48, (-10 + (group * 4)))
+	signColor.translate(xPos, 0.48, -10 + groupNumber)
 	const base = new THREE.Mesh(signColor, color)
 	image.add(base)
 	image.name = 'signGroup-' + group
@@ -1571,8 +1601,10 @@ function onDocumentMouseDown(event) {
 		controls.enabled = false
 
 		if (movingOn) {
-			mouse.x = (((event.clientX - rect.left) / canv.clientWidth) * 2) - 1
-			mouse.y = -(((event.clientY - rect.top) / canv.clientHeight) * 2) + 1
+			const browserWidth = (event.clientX - rect.left) / canv.clientWidth
+			const browserHeight = (event.clientY - rect.top) / canv.clientHeight
+			mouse.x = browserWidth * 2
+			mouse.y = -(browserHeight * 2)
 			raycaster.setFromCamera(mouse, camera)
 			const ground = raycaster.intersectObject(objectPlane)
 			if (ground.length > 0) {
@@ -1603,7 +1635,11 @@ function onDocumentMouseDown(event) {
 				child.material = glow
 			})
 
-			hovered.position.set(hovered.position.x, hovered.position.y + 1, hovered.position.z)
+			hovered.position.set(
+				hovered.position.x,
+				hovered.position.y + 1,
+				hovered.position.z
+			)
 		}
 		render()
 	}
@@ -1612,8 +1648,10 @@ function onDocumentMouseDown(event) {
 function onDocumentTouchStart(event) {
 	event.preventDefault()
 	event = event.changedTouches[0]
-	mouse.x = (((event.clientX - rect.left) / canv.clientWidth) * 2) - 1
-	mouse.y = -(((event.clientY - rect.top) / canv.clientHeight) * 2) + 1
+	const browserWidth = (event.clientX - rect.left) / canv.clientWidth
+	const browserHeight = (event.clientY - rect.top) / canv.clientHeight
+	mouse.x = browserWidth * 2
+	mouse.y = -(browserHeight * 2)
 
 	raycaster.setFromCamera(mouse, camera)
 	const people = raycaster.intersectObjects(flaggers)
@@ -1655,7 +1693,11 @@ function onDocumentTouchStart(event) {
 			flaggerMan.forEach(child => {
 				child.material = glow
 			})
-			hovered.position.set(hovered.position.x, hovered.position.y + 1, hovered.position.z)
+			hovered.position.set(
+				hovered.position.x,
+				hovered.position.y + 1,
+				hovered.position.z
+			)
 		}
 		render()
 	}
@@ -1664,8 +1706,10 @@ function onDocumentTouchStart(event) {
 function onDocumentMouseMove(event) {
 	event.preventDefault()
 	// Subtract the extra space on the left and top and dicide by width and height
-	mouse.x = (((event.clientX - rect.left) / canv.clientWidth) * 2) - 1
-	mouse.y = -(((event.clientY - rect.top) / canv.clientHeight) * 2) + 1
+	const browserWidth = (event.clientX - rect.left) / canv.clientWidth
+	const browserHeight = (event.clientY - rect.top) / canv.clientHeight
+	mouse.x = browserWidth * 2
+	mouse.y = -(browserHeight * 2)
 
 	raycaster.setFromCamera(mouse, camera)
 	const people = raycaster.intersectObjects(flaggers)
@@ -1689,8 +1733,10 @@ function onDocumentTouchMove(event) {
 	event.preventDefault()
 	event = event.changedTouches[0]
 	// Subtract the extra space on the left and top and dicide by width and height
-	mouse.x = (((event.clientX - rect.left) / canv.clientWidth) * 2) - 1
-	mouse.y = -(((event.clientY - rect.top) / canv.clientHeight) * 2) + 1
+	const browserWidth = (event.clientX - rect.left) / canv.clientWidth
+	const browserHeight = (event.clientY - rect.top) / canv.clientHeight
+	mouse.x = browserWidth * 2
+	mouse.y = -(browserHeight * 2)
 
 	raycaster.setFromCamera(mouse, camera)
 	const ground = raycaster.intersectObject(objectPlane)
@@ -1699,7 +1745,11 @@ function onDocumentTouchMove(event) {
 	// Because there is no hover with a touch control
 	if (selected) {
 		if (ground.length > 0) {
-			selected.position.set(ground[0].point.x, selected.position.y, ground[0].point.z)
+			selected.position.set(
+				ground[0].point.x,
+				selected.position.y,
+				ground[0].point.z
+			)
 			render()
 		}
 	}
@@ -1772,10 +1822,12 @@ const clearCones = (group, close) => {
 
 	const newFlaggers = []
 	for (let i = 0; i < flaggers.length; i++) {
-		if (flaggers[i].name !== (group + '-flagger1') &&
-		flaggers[i].name !== (group + '-flagger2') &&
-		flaggers[i].name !== (group + '-arrow1') &&
-		flaggers[i].name !== (group + '-arrow2')) {
+		if (
+			flaggers[i].name !== group + '-flagger1' &&
+			flaggers[i].name !== group + '-flagger2' &&
+			flaggers[i].name !== group + '-arrow1' &&
+			flaggers[i].name !== group + '-arrow2'
+		) {
 			newFlaggers.push(flaggers[i])
 		}
 	}
@@ -1821,7 +1873,7 @@ const renderCones = (group, color) => {
 	stripeGroup.merge(stripe)
 
 	let x = initialX
-	for (let i = initialX; i >= (initialX - buffer); i -= 2) {
+	for (let i = initialX; i >= initialX - buffer; i -= 2) {
 		cone.translate(-2, 0, 0)
 		coneGroup.merge(cone)
 		stripe.translate(-2, 0, 0)
@@ -1829,7 +1881,8 @@ const renderCones = (group, color) => {
 		x -= 2
 	}
 
-	const upstream = Number(document.getElementById('upstream-' + group).value) / 50
+	const upstream =
+		Number(document.getElementById('upstream-' + group).value) / 50
 	const height = 4.5
 	let cones = Math.pow(upstream, 2) + Math.pow(height, 2)
 	cones = Math.floor(Math.sqrt(cones)) / 2
@@ -1844,7 +1897,7 @@ const renderCones = (group, color) => {
 	x -= 2
 	let end = x - upstream
 
-	for (let a = x; a > (end); a -= spacing) {
+	for (let a = x; a > end; a -= spacing) {
 		cone.translate(-spacing, 0, angle)
 		coneGroup.merge(cone)
 		stripe.translate(-spacing, 0, angle)
@@ -1885,10 +1938,11 @@ const renderCones = (group, color) => {
 
 	x = initialX
 
-	const downBuff = Number(document.getElementById('downbuff-' + group).value) / 50
+	const downBuff =
+		Number(document.getElementById('downbuff-' + group).value) / 50
 
 	if (downBuff && downBuff > 0) {
-		for (let i = initialX; i <= (initialX + downBuff); i += 2) {
+		for (let i = initialX; i <= initialX + downBuff; i += 2) {
 			cone.translate(2, 0, 0)
 			coneGroup.merge(cone)
 			stripe.translate(2, 0, 0)
@@ -1897,7 +1951,8 @@ const renderCones = (group, color) => {
 		}
 	}
 
-	const downstream = Number(document.getElementById('downstream-' + group).value) / 50
+	const downstream =
+		Number(document.getElementById('downstream-' + group).value) / 50
 
 	cone.translate(2, 0, 0)
 	coneGroup.merge(cone)
@@ -1911,7 +1966,7 @@ const renderCones = (group, color) => {
 	y = 0
 	end = x + downstream
 
-	for (let a = x; a < (end); a += spacing) {
+	for (let a = x; a < end; a += spacing) {
 		cone.translate(spacing, 0, angle)
 		coneGroup.merge(cone)
 		stripe.translate(spacing, 0, angle)
@@ -1928,7 +1983,7 @@ const renderCones = (group, color) => {
 	groupCones.add(coneShadow)
 
 	groupCones.castShadow = true
-	groupCones.name = (group + '-cones')
+	groupCones.name = group + '-cones'
 	scene.add(groupCones)
 
 	slide('group-' + group)
@@ -1943,12 +1998,14 @@ const renderCones = (group, color) => {
 
 function signArray(group, checkbox) {
 	const idx = signs[group].indexOf(checkbox.value)
-	if (idx !== -1) {				 								// If already in array
-		signs[group].splice(idx, 1) 					// Make sure we remove it
+	if (idx !== -1) {
+		// If already in array
+		signs[group].splice(idx, 1) // Make sure we remove it
 	}
 
-	if (checkbox.checked) {									// If checked
-		signs[group].unshift(checkbox.value)	// Add to end of array
+	if (checkbox.checked) {
+		// If checked
+		signs[group].unshift(checkbox.value) // Add to end of array
 	}
 }
 
@@ -1965,12 +2022,13 @@ function signText(group, xPos, signImages) {
 				curveSegments: 12,
 				bevelEnabled: false
 			})
-				geometry.rotateX(-1.6)
-				const textMesh = new THREE.Mesh(geometry, white)
-				textMesh.position.set((xPos + 4), 0.5, (-9 + (group * 4)))
-				textMesh.name = 'spacing-' + group
-				scene.add(textMesh)
-				render()
+			geometry.rotateX(-1.6)
+			const textMesh = new THREE.Mesh(geometry, white)
+			const groupNumber = group * 4
+			textMesh.position.set(xPos + 4, 0.5, -9 + groupNumber)
+			textMesh.name = 'spacing-' + group
+			scene.add(textMesh)
+			render()
 		})
 	}
 }
@@ -2009,10 +2067,11 @@ function signSpace(color, group) {
 		xPos -= 3
 	}
 
+	const groupNumber = group * 4
 	signBase.rotateY(1.6)
-	signBase.translate(xPos, 0.5, (-10 + (group * 4)))
+	signBase.translate(xPos, 0.5, -10 + groupNumber)
 	signColor.rotateY(1.6)
-	signColor.translate(xPos, 0.48, (-10 + (group * 4)))
+	signColor.translate(xPos, 0.48, -10 + groupNumber)
 
 	signText(group, xPos, signImages)
 
@@ -2128,77 +2187,113 @@ for (let i = 1; i <= 6; i++) {
 		clearCones(i, true)
 	})
 
-	document.getElementById('option-' + i + '-arrowArray').addEventListener('change', () => {
-		arrowArray(i, document.getElementById('option-' + i + '-arrowArray'))
-	})
+	document
+		.getElementById('option-' + i + '-arrowArray')
+		.addEventListener('change', () => {
+			arrowArray(i, document.getElementById('option-' + i + '-arrowArray'))
+		})
 
-	document.getElementById('option-' + i + '-endArray').addEventListener('change', () => {
-		endArray(i, document.getElementById('option-' + i + '-endArray'))
-	})
+	document
+		.getElementById('option-' + i + '-endArray')
+		.addEventListener('change', () => {
+			endArray(i, document.getElementById('option-' + i + '-endArray'))
+		})
 
-	document.getElementById('sign-' + i + '-worker').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-worker'))
-	})
+	document
+		.getElementById('sign-' + i + '-worker')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-worker'))
+		})
 
-	document.getElementById('sign-' + i + '-flagger').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-flagger'))
-	})
+	document
+		.getElementById('sign-' + i + '-flagger')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-flagger'))
+		})
 
-	document.getElementById('sign-' + i + '-left').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-left'))
-	})
+	document
+		.getElementById('sign-' + i + '-left')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-left'))
+		})
 
-	document.getElementById('sign-' + i + '-right').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-right'))
-	})
+	document
+		.getElementById('sign-' + i + '-right')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-right'))
+		})
 
-	document.getElementById('sign-' + i + '-stop').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-stop'))
-	})
+	document
+		.getElementById('sign-' + i + '-stop')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-stop'))
+		})
 
-	document.getElementById('sign-' + i + '-lane').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-lane'))
-	})
+	document
+		.getElementById('sign-' + i + '-lane')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-lane'))
+		})
 
-	document.getElementById('sign-' + i + '-machine').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-machine'))
-	})
+	document
+		.getElementById('sign-' + i + '-machine')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-machine'))
+		})
 
-	document.getElementById('sign-' + i + '-road').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-road'))
-	})
+	document
+		.getElementById('sign-' + i + '-road')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-road'))
+		})
 
-	document.getElementById('sign-' + i + '-const').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-const'))
-	})
+	document
+		.getElementById('sign-' + i + '-const')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-const'))
+		})
 
-	document.getElementById('sign-' + i + '-utility').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-utility'))
-	})
+	document
+		.getElementById('sign-' + i + '-utility')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-utility'))
+		})
 
-	document.getElementById('sign-' + i + '-rLane').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-rLane'))
-	})
+	document
+		.getElementById('sign-' + i + '-rLane')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-rLane'))
+		})
 
-	document.getElementById('sign-' + i + '-men').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-men'))
-	})
+	document
+		.getElementById('sign-' + i + '-men')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-men'))
+		})
 
-	document.getElementById('sign-' + i + '-lLane').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-lLane'))
-	})
+	document
+		.getElementById('sign-' + i + '-lLane')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-lLane'))
+		})
 
-	document.getElementById('sign-' + i + '-flag').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-flag'))
-	})
+	document
+		.getElementById('sign-' + i + '-flag')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-flag'))
+		})
 
-	document.getElementById('sign-' + i + '-fAhead').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-fAhead'))
-	})
+	document
+		.getElementById('sign-' + i + '-fAhead')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-fAhead'))
+		})
 
-	document.getElementById('sign-' + i + '-laneAhead').addEventListener('change', () => {
-		signArray(i, document.getElementById('sign-' + i + '-laneAhead'))
-	})
+	document
+		.getElementById('sign-' + i + '-laneAhead')
+		.addEventListener('change', () => {
+			signArray(i, document.getElementById('sign-' + i + '-laneAhead'))
+		})
 
 	document.getElementById('sign-' + i).addEventListener('focus', () => {
 		focusChange(document.getElementById('sign-' + i))

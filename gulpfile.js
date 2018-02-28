@@ -5,13 +5,15 @@
 *	3.	Styles
 *	4.	Images
 *	5.	HTML
-*	6.	Server
-*	7.	Globals
+*	6.	Watch
+*	7.	Server
+*	8.	Globals
 *
 */
 
 const gulp = require('gulp')
 const browserSync = require('browser-sync')
+const closureCompiler = require('google-closure-compiler').gulp()
 const composer = require('gulp-uglify/composer')
 const concat = require('gulp-concat')
 const data = require('gulp-data')
@@ -19,12 +21,15 @@ const del = require('del')
 const htmlmin = require('gulp-htmlmin')
 const imagemin = require('gulp-imagemin')
 const imageResize = require('gulp-image-resize')
-const optimizejs = require('gulp-optimize-js')
+const jsValidate = require('gulp-jsvalidate')
+const minify = require('gulp-uglify-es').default
+const prettier = require('gulp-prettier-plugin')
 const plumber = require('gulp-plumber')
 const rename = require('gulp-rename')
 const render = require('gulp-nunjucks-render')
 const sass = require('gulp-sass')
 const uglifyjs = require('uglify-es')
+const xo = require('gulp-xo')
 
 const paths = {
 	styles: {
@@ -65,34 +70,42 @@ gulp.task('javascript', () => {
 	return gulp.src(paths.scripts.src)
 		.pipe(plumber())
 		.pipe(concat('bundled.js'))
+		.pipe(prettier({
+			arrowParens: 'always',
+			bracketSpacing: false,
+			semi: false,
+			singleQuote: true,
+			useTabs: true
+		},
+    {filter: true})
+    )
+		.pipe(xo({
+			fix: true
+		}))
+		.pipe(xo.format())
+		.pipe(jsValidate())
 		.pipe(gulp.dest(paths.scripts.build))
-		.pipe(uglify())
-		.pipe(optimizejs())
-		.pipe(rename('bundled.min.js'))
-		.pipe(gulp.dest(paths.scripts.dist))
 })
-
-const jsWatch = gulp.watch(paths.scripts.src, gulp.parallel('javascript'))
-jsWatch.on('all', path => {
-	console.log('File ' + path + ' was changed. Running Javascript Task...')
-})
-
-/* 2. Includes */
 
 gulp.task('includes', () => {
 	return gulp.src(paths.includes.src)
 		.pipe(plumber())
-		.pipe(concat('includes.js'))
-		.pipe(gulp.dest(paths.includes.build))
-		.pipe(uglify())
-		.pipe(optimizejs())
-		.pipe(rename('includes.min.js'))
+		.pipe(concat('includes.min.js'))
+		.pipe(prettier({
+			arrowParens: 'always',
+			bracketSpacing: false,
+			semi: false,
+			singleQuote: true,
+			useTabs: true
+		},
+    {filter: true})
+    )
+		.pipe(xo({
+			fix: true
+		}))
+		.pipe(xo.format())
+		.pipe(jsValidate())
 		.pipe(gulp.dest(paths.includes.dist))
-})
-
-const includesWatch = gulp.watch(paths.includes.src, gulp.parallel('includes'))
-includesWatch.on('all', path => {
-	console.log('File ' + path + ' was changed. Running Includes Task...')
 })
 
 /* 3. Styles */
@@ -103,11 +116,6 @@ gulp.task('sass', () => {
 		.pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
 		.pipe(rename('main.css'))
 		.pipe(gulp.dest(paths.styles.dist))
-})
-
-const sassWatch = gulp.watch(paths.styles.src, gulp.parallel('sass'))
-sassWatch.on('all', path => {
-	console.log('File ' + path + ' was changed. Running Sass Task...')
 })
 
 /* 4. Images */
@@ -144,12 +152,29 @@ gulp.task('html', () => {
 		.pipe(gulp.dest(paths.html.dist))
 })
 
-const htmlWatch = gulp.watch(paths.html.src + '**/*', gulp.parallel('html'))
-htmlWatch.on('all', path => {
-	console.log('File ' + path + ' was changed. Running HTML Task...')
+/* 6. Watch */
+
+gulp.task('watch', () => {
+	const jsWatch = gulp.watch(paths.scripts.src, gulp.parallel('javascript'))
+	const includesWatch = gulp.watch(paths.includes.src, gulp.parallel('includes'))
+	const sassWatch = gulp.watch(paths.styles.src, gulp.parallel('sass'))
+	const htmlWatch = gulp.watch(paths.html.src + '**/*', gulp.parallel('html'))
+
+	htmlWatch.on('change', path => {
+		console.log('File ' + path + ' was changed. Running HTML Task...')
+	})
+	sassWatch.on('change', path => {
+		console.log('File ' + path + ' was changed. Running Sass Task...')
+	})
+	includesWatch.on('change', path => {
+		console.log('File ' + path + ' was changed. Running Includes Task...')
+	})
+	jsWatch.on('change', path => {
+		console.log('File ' + path + ' was changed. Running Javascript Task...')
+	})
 })
 
-/* 6. Server */
+/* 7. Server */
 
 gulp.task('connect', () => {
   browserSync(
@@ -161,16 +186,14 @@ gulp.task('connect', () => {
 	)
 })
 
-/* 7. Global */
+/* 8. Global */
 
 gulp.task('clean', () => {
-	return del(['build/**/*'])
+	return del(['dist/**/*'])
 })
 
-gulp.task('default', gulp.series('html', 'javascript', 'includes', 'sass', 'images', 'move', done => {
-	done()
-}))
-gulp.task('serve', gulp.series('default', 'connect'))
-gulp.task('deploy', gulp.series('clean', 'default', done => {
-	done()
-}))
+gulp.task('default', gulp.series('html', 'includes', 'sass', 'images', 'move'))
+
+gulp.task('serve', gulp.series('default', 'watch', 'connect'))
+
+gulp.task('deploy', gulp.series('clean', 'default'))

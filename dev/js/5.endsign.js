@@ -13,7 +13,7 @@ function endArray(group, checkbox) {
 }
 
 function endSign(color, group) {
-	if (end[group].length < 0) {
+	if (end[group].length <= 0) {
 		return
 	}
 	const signBase = new THREE.BoxGeometry(2.8, 2.25, 0.1)
@@ -26,9 +26,10 @@ function endSign(color, group) {
 		xPos -= 3
 	}
 
-	signBase.translate(xPos, 0.5, (-9.75 + (group * 4)))
+	const groupNumber = group * 4
+	signBase.translate(xPos, 0.5, (-9.75 + groupNumber))
 	const image = new THREE.Mesh(signBase, endSignMaterial)
-	signColor.translate(xPos, 0.48, (-10 + (group * 4)))
+	signColor.translate(xPos, 0.48, (-10 + groupNumber))
 	const base = new THREE.Mesh(signColor, color)
 	image.add(base)
 	image.name = 'signGroup-' + group

@@ -1,36 +1,50 @@
 {
 	"name": "RWS",
 	"scripts": {
-		"test": "xo"
+		"test": "xo",
+		"closure": "java -jar node_modules/google-closure-compiler/compiler.jar --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --language_in=ECMASCRIPT6 --js dev/bundled.js --js_output_file dist/js/bundled.min.js",
+		"javascript": "gulp javascript",
+		"build": "gulp deploy && yarn javascript && yarn closure"
 	},
- "dependencies": {
-  "browser-sync": "^2.23.6",
-  "browserify": "^16.1.0",
-  "del": "^3.0.0",
-  "globby": "^8.0.1",
-  "gulp": "^4.0.0",
-  "gulp-concat": "^2.6.1",
-  "gulp-connect": "^5.2.0",
-  "gulp-data": "^1.3.1",
-  "gulp-htmlmin": "^4.0.0",
-  "gulp-image-resize": "^0.13.0",
-  "gulp-imagemin": "^4.1.0",
-  "gulp-nunjucks": "^3.1.1",
-  "gulp-nunjucks-render": "^2.2.2",
-  "gulp-optimize-js": "^1.1.0",
-  "gulp-plumber": "^1.2.0",
-  "gulp-rename": "^1.2.2",
-  "gulp-sass": "^3.1.0",
-  "gulp-uglify": "^3.0.0",
-  "pump": "^3.0.0",
-  "uglify-es": "^3.3.5",
-  "xo": "^0.20.3"
- },
+	"dependencies": {
+		"browser-sync": "^2.23.6",
+		"browserify": "^16.1.0",
+		"del": "^3.0.0",
+		"globby": "^8.0.1",
+		"google-closure-compiler": "^20180204.0.0",
+		"gulp": "^4.0.0",
+		"gulp-concat": "^2.6.1",
+		"gulp-connect": "^5.2.0",
+		"gulp-data": "^1.3.1",
+		"gulp-htmlmin": "^4.0.0",
+		"gulp-image-resize": "^0.13.0",
+		"gulp-imagemin": "^4.1.0",
+		"gulp-jscs": "^4.1.0",
+		"gulp-jshint": "^2.1.0",
+		"gulp-jsvalidate": "^4.0.0",
+		"gulp-minifier": "^1.1.0",
+		"gulp-minify": "^2.1.0",
+		"gulp-nunjucks": "^3.1.1",
+		"gulp-nunjucks-render": "^2.2.2",
+		"gulp-optimize-js": "^1.1.0",
+		"gulp-plumber": "^1.2.0",
+		"gulp-prettier-plugin": "^1.2.0",
+		"gulp-rename": "^1.2.2",
+		"gulp-sass": "^3.1.0",
+		"gulp-uglify": "^3.0.0",
+		"gulp-uglify-es": "^1.0.1",
+		"gulp-xo": "^0.17.0",
+		"jshint": "^2.9.5",
+		"jshint-stylish": "^2.2.1",
+		"pump": "^3.0.0",
+		"uglify-es": "^3.3.5",
+		"xo": "^0.20.3"
+	},
 	"xo": {
 		"space": false,
 		"semicolon": false,
 		"rules": {
-		  "no-unused-var": 0
+			"no-unused-var": 0
 		},
 		"ignores": [
 			"./dev/**",
@@ -41,5 +55,29 @@
 			"THREE",
 			"window"
 		]
+	},
+	"prettier": {
+		"arrowParens": "always",
+		"bracketSpacing": false,
+		"semi": false,
+		"singleQuote": true,
+		"useTabs": true
+	},
+	"eslintConfig": {
+		"rules": {
+			"object-curly-spacing": [
+				"error",
+				"never"
+			],
+			"array-bracket-spacing": [
+				"error",
+				"never"
+			],
+			"semi": "never",
+			"indent": [
+				"error",
+				"tab"
+			]
+		}
 	}
 }

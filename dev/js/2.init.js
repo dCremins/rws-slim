@@ -18,19 +18,19 @@ function initCamera() {
 
 function initLights() {
 	ambient = new THREE.HemisphereLight(0xDEEEF2, 0x665C6D, 0.9)
-	sun = new THREE.SpotLight(0xFCDC74, 0.2)
-	sun.position.set(-50, 40, -5)
-	sun.castShadow = true
-	sun.shadow.camera.left = -10
-	sun.shadow.camera.right = 10
-	sun.shadow.camera.top = 10
-	sun.shadow.camera.bottom = -10
-	sun.shadow.camera.near = 0.1
-	sun.shadow.camera.far = 1000
-	sun.shadow.mapSize.width = 2048
-	sun.shadow.mapSize.height = 2048
+	lightSource = new THREE.SpotLight(0xFCDC74, 0.2)
+	lightSource.position.set(-50, 40, -5)
+	lightSource.castShadow = true
+	lightSource.shadow.camera.left = -10
+	lightSource.shadow.camera.right = 10
+	lightSource.shadow.camera.top = 10
+	lightSource.shadow.camera.bottom = -10
+	lightSource.shadow.camera.near = 0.1
+	lightSource.shadow.camera.far = 1000
+	lightSource.shadow.mapSize.width = 2048
+	lightSource.shadow.mapSize.height = 2048
 	scene.add(ambient)
-	scene.add(sun)
+	scene.add(lightSource)
 }
 
 function initRender() {
