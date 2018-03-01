@@ -12,10 +12,8 @@ function onDocumentMouseDown(event) {
 		controls.enabled = false
 
 		if (movingOn) {
-			const browserWidth = (event.clientX - rect.left) / canv.clientWidth
-			const browserHeight = (event.clientY - rect.top) / canv.clientHeight
-			mouse.x = browserWidth * 2
-			mouse.y = -(browserHeight * 2)
+			mouse.x = (((event.clientX - rect.left) / canv.clientWidth) * 2) - 1
+			mouse.y = -(((event.clientY - rect.top) / canv.clientHeight) * 2) + 1
 			raycaster.setFromCamera(mouse, camera)
 			const ground = raycaster.intersectObject(objectPlane)
 			if (ground.length > 0) {
@@ -55,10 +53,8 @@ function onDocumentMouseDown(event) {
 function onDocumentTouchStart(event) {
 	event.preventDefault()
 	event = event.changedTouches[0]
-	const browserWidth = (event.clientX - rect.left) / canv.clientWidth
-	const browserHeight = (event.clientY - rect.top) / canv.clientHeight
-	mouse.x = browserWidth * 2
-	mouse.y = -(browserHeight * 2)
+	mouse.x = (((event.clientX - rect.left) / canv.clientWidth) * 2) - 1
+	mouse.y = -(((event.clientY - rect.top) / canv.clientHeight) * 2) + 1
 
 	raycaster.setFromCamera(mouse, camera)
 	const people = raycaster.intersectObjects(flaggers)

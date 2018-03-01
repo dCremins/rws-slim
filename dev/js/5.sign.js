@@ -35,8 +35,7 @@ function signText(group, xPos, signImages) {
 
 function signSpace(color, group) {
 	const bases = new THREE.Geometry()
-	const allSign = new THREE.Group()
-	let signMesh
+	const faces = new THREE.Geometry()
 	const materials = [
 		color,
 		workerSignMaterial,
@@ -59,8 +58,8 @@ function signSpace(color, group) {
 	]
 
 	const signImages = signs[group]
-	const signBase = new THREE.CylinderGeometry(2.8, 2.8, 0.1, 4)
-	const signColor = new THREE.CylinderGeometry(3.2, 3.2, 0.1, 4)
+	const signBase = new THREE.CylinderGeometry(2.8, 2.8, 0.2, 4)
+	const signColor = new THREE.CylinderGeometry(3.2, 3.2, 0.2, 4)
 	let xPos = 12.5
 
 	if (Math.abs(group % 2) !== 0) {
@@ -131,17 +130,20 @@ function signSpace(color, group) {
 				x = 6
 		}
 
-		signMesh = new THREE.Mesh(signBase, materials[x])
-		allSign.add(signMesh)
 		bases.merge(signColor)
+		for (let j = 0; j < signBase.faces.length; j++) {
+			signBase.faces[j].materialIndex = x
+		}
+		faces.merge(signBase)
 
 		signBase.translate(-6.5, 0, 0)
 		signColor.translate(-6.5, 0, 0)
 	}
 
 	const combinedBase = new THREE.Mesh(bases, color)
-	allSign.add(combinedBase)
-	allSign.castShadow = true
-	allSign.name = 'signGroup-' + group
-	scene.add(allSign)
+	const combinedMesh = new THREE.Mesh(faces, materials)
+	combinedBase.add(combinedMesh)
+	combinedBase.castShadow = true
+	combinedBase.name = 'signGroup-' + group
+	scene.add(combinedBase)
 }

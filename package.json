@@ -38,6 +38,7 @@
 		"jshint-stylish": "^2.2.1",
 		"pump": "^3.0.0",
 		"uglify-es": "^3.3.5",
+		"vinyl-paths": "^2.1.0",
 		"xo": "^0.20.3"
 	},
 	"xo": {

@@ -6,7 +6,6 @@ let renderer
 let ambient
 let lightSource
 let objectPlane
-let THREE
 let flaggers = []
 const signs = [[], [], [], [], [], [], []]
 

@@ -13,7 +13,6 @@
 		{% include 'menu.nunjucks' %}
 
 	  <footer>
-			<script defer="defer" src="js/{{ includes }}"></script>
 			<script defer="defer" src="js/{{ javascript }}"></script>
 	  </footer>
 	</body>
