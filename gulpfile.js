@@ -13,6 +13,7 @@
 
 const gulp = require('gulp')
 const browserSync = require('browser-sync')
+const compiler = require('google-closure-compiler').gulp()
 const composer = require('gulp-uglify/composer')
 const concat = require('gulp-concat')
 const data = require('gulp-data')
@@ -64,44 +65,28 @@ const paths = {
 const uglify = composer(uglifyjs, console)
 
 gulp.task('javascript', () => {
-	return gulp.src(paths.scripts.src)
-		.pipe(plumber())
-		.pipe(concat('main.js'))
-		.pipe(prettier({
-			arrowParens: 'always',
-			bracketSpacing: false,
-			semi: false,
-			singleQuote: true,
-			useTabs: true
-		},
-    {filter: true})
-    )
-		.pipe(xo({
-			fix: true
+	return gulp.src(paths.scripts.src, {base: './'})
+		.pipe(compiler({
+			warning_level: 'VERBOSE',
+			jscomp_off: 'globalThis',
+			jscomp_off: 'checkTypes',
+			language_out: 'ECMASCRIPT5_STRICT',
+			js_output_file: './main.js',
+			externs: 'dev/ignore/externs.js'
 		}))
-		.pipe(xo.format())
-		.pipe(jsValidate())
 		.pipe(gulp.dest(paths.scripts.build))
 })
 
 gulp.task('includes', () => {
-	return gulp.src(paths.scripts.includes)
-		.pipe(plumber())
-		.pipe(concat('includes.js'))
-		.pipe(prettier({
-			arrowParens: 'always',
-			bracketSpacing: false,
-			semi: false,
-			singleQuote: true,
-			useTabs: true
-		},
-    {filter: true})
-    )
-		.pipe(xo({
-			fix: true
+	return gulp.src(paths.scripts.includes, {base: './'})
+		.pipe(compiler({
+			warning_level: 'VERBOSE',
+			jscomp_off: 'globalThis',
+			jscomp_off: 'checkTypes',
+			externs: 'dev/ignore/externs.js',
+			language_out: 'ECMASCRIPT5_STRICT',
+			js_output_file: './includes.js'
 		}))
-		.pipe(xo.format())
-		.pipe(jsValidate())
 		.pipe(gulp.dest(paths.scripts.build))
 })
 
@@ -110,15 +95,6 @@ gulp.task('bundle', gulp.series(gulp.parallel('includes', 'javascript'), () => {
 		.pipe(vinylPaths(del))
 		.pipe(plumber())
 		.pipe(concat('bundled.min.js'))
-		.pipe(uglify({
-			warnings: 'verbose',
-			compress: {
-				unused: false
-			},
-			mangle: false,
-			ie8: true,
-			keep_fnames: true
-		}))
 		.pipe(optimizejs())
 		.pipe(jsValidate())
 		.pipe(gulp.dest(paths.scripts.dist))
@@ -184,7 +160,7 @@ gulp.task('connect', () => {
 /* 8. Global */
 
 gulp.task('clean', () => {
-	return del(['dist/**/*'])
+	return del(['dist'])
 })
 
 gulp.task('default', gulp.series('html', 'bundle', 'sass', 'images', 'move'))
