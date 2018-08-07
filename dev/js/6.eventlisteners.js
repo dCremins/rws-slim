@@ -1,3 +1,4 @@
+
 for (let i = 1; i <= 6; i++) {
 	switch (i) {
 		case 6:

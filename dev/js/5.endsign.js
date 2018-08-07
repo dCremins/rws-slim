@@ -12,27 +12,19 @@ function endArray(group, checkbox) {
 	}
 }
 
-function endSign(color, group) {
-	if (end[group].length <= 0) {
-		return
-	}
-	const signBase = new THREE.BoxGeometry(2.8, 2.25, 0.1)
-	signBase.rotateX(-1.6)
-	const signColor = new THREE.BoxGeometry(3.2, 3.2, 0.1)
-	signColor.rotateX(-1.6)
-	let xPos = 25
+function endSign(position, group) {
+	if (end[group].length > 0) {
+		const signBase = new THREE.BoxGeometry(6, 0.2, 6)
+		signBase.translate((position - 0.5), 0.5, (-22 + (8 * group)))
 
-	if (Math.abs(group % 2) !== 0) {
-		xPos -= 3
+		const image = new THREE.Mesh(signBase, endSignMaterial)
+
+		image.name = 'signGroup-' + group
+		image.castShadow = true
+		scene.add(image)
+
+		position += 6.2
 	}
 
-	const groupNumber = group * 4
-	signBase.translate(xPos, 0.5, (-9.75 + groupNumber))
-	const image = new THREE.Mesh(signBase, endSignMaterial)
-	signColor.translate(xPos, 0.48, (-10 + groupNumber))
-	const base = new THREE.Mesh(signColor, color)
-	image.add(base)
-	image.name = 'signGroup-' + group
-	image.castShadow = true
-	scene.add(image)
+	signText(group, position, signs[group])
 }

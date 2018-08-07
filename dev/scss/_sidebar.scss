@@ -2,7 +2,7 @@
   background-color: $black;
   display: flex;
   flex-flow: row wrap;
-  height: 100px;
+  height: 65px;
   width: 100%;
   z-index: 10;
 }
@@ -36,13 +36,13 @@
 }
 
 .cone {
-  width: 60px;
+  width: 40px;
 }
 
 .inputs {
 	border-radius: 0;
 	display: block;
-	height: 60px;
+	height: 40px;
   margin: auto;
 	padding: 0;
 	position: relative;
@@ -99,7 +99,7 @@
 
 	&.filled {
 		label {
-			transform: translateY(-30px);
+			transform: translateY(-22px);
 		}
 	}
 
@@ -113,7 +113,7 @@
 		padding: 3px;
 		pointer-events: none;
 		position: absolute;
-		top: 15px;
+		top: 7px;
 		transition-duration: .3s;
 		transition-property: color, transform;
 	}
@@ -249,8 +249,6 @@ button {
 	}
 
 	input:checked ~ .checkmark {
-
-
 		&.red-check {
 			background-color: $red;
 		}

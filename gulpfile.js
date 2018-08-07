@@ -30,6 +30,7 @@ const render = require('gulp-nunjucks-render')
 const sass = require('gulp-sass')
 const uglifyjs = require('uglify-es')
 const vinylPaths = require('vinyl-paths')
+const { watch } = require('gulp')
 const xo = require('gulp-xo')
 
 const paths = {
@@ -90,7 +91,7 @@ gulp.task('includes', () => {
 		.pipe(gulp.dest(paths.scripts.build))
 })
 
-gulp.task('bundle', gulp.series(gulp.parallel('includes', 'javascript'), () => {
+gulp.task('compress', () => {
 	return gulp.src(paths.scripts.bundle)
 		.pipe(vinylPaths(del))
 		.pipe(plumber())
@@ -98,7 +99,9 @@ gulp.task('bundle', gulp.series(gulp.parallel('includes', 'javascript'), () => {
 		.pipe(optimizejs())
 		.pipe(jsValidate())
 		.pipe(gulp.dest(paths.scripts.dist))
-}))
+})
+
+gulp.task('bundle', gulp.series(gulp.parallel('includes', 'javascript'), 'compress'))
 
 /* 3. Styles */
 
@@ -146,15 +149,19 @@ gulp.task('html', () => {
 
 /* 6. Watch */
 
-gulp.task('watch', () => {
+gulp.task('reload', done => {
+	browserSync.reload()
+	done()
 })
 
+watch('dev/js/*.js', gulp.series('bundle', 'reload'))
+
+watch('dev/scss/*', gulp.series('sass', 'reload'))
 /* 7. Server */
 
-gulp.task('connect', () => {
+gulp.task('connect', done => {
   browserSync({server: {baseDir: 'dist'}})
-	gulp.watch(paths.scripts.build + '**/*')
-		.on('change', gulp.parallel('bundle'))
+	done()
 })
 
 /* 8. Global */

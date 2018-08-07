@@ -17,7 +17,11 @@ function onDocumentMouseDown(event) {
 			raycaster.setFromCamera(mouse, camera)
 			const ground = raycaster.intersectObject(objectPlane)
 			if (ground.length > 0) {
-				hovered.position.set(ground[0].point.x, yHolder, ground[0].point.z - 3)
+				if (hovered.name.endsWith('2')) {
+					hovered.position.set(ground[0].point.x - 2.5, yHolder, ground[0].point.z - 3)
+				} else {
+					hovered.position.set(ground[0].point.x + 2.5, yHolder, ground[0].point.z - 3.5)
+				}
 			}
 
 			let i = 0

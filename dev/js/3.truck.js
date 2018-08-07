@@ -146,6 +146,6 @@ function initTruck() {
 	truck.scale.set(0.9, 0.9, 0.9)
 
 	truck.castShadow = true
-	truck.position.set(-2.5, 0, -10)
+	truck.position.set(21.25, 0, -17)
 	scene.add(truck)
 }

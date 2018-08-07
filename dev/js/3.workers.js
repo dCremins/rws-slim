@@ -361,6 +361,6 @@ function initWorkers()	{
 	people.add(shadowMen)
 
 	people.castShadow = true
-	people.position.set(-2.35, -0.03, -17.55)
+	people.position.set(21, -0.03, -25)
 	scene.add(people)
 }

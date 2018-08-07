@@ -297,6 +297,6 @@ function initBackHoe() {
 	BackHoe.add(truckShadows)
 
 	BackHoe.castShadow = true
-	BackHoe.position.set(2.5, 1.4, -15)
+	BackHoe.position.set(21.5, 1.4, -20.75)
 	scene.add(BackHoe)
 }

@@ -5,17 +5,18 @@ function signArray(group, checkbox) {
 	}
 
 	if (checkbox.checked) {									// If checked
-		signs[group].unshift(checkbox.value)	// Add to end of array
+		signs[group].push(checkbox.value)	// Add to end of array
 	}
 }
 
 function signText(group, xPos, signImages) {
 	if (signImages.length > 0) {
 		const signSpacing = document.getElementById('sign-' + group).value
+		const text = signSpacing ? signSpacing + 'ft' : ''
 		const loader = new THREE.FontLoader()
 
 		loader.load('fonts/helvetiker_regular.typeface.json', font => {
-			const geometry = new THREE.TextGeometry(signSpacing, {
+			const geometry = new THREE.TextGeometry(text, {
 				font,
 				size: 2,
 				height: 0.2,
@@ -24,8 +25,7 @@ function signText(group, xPos, signImages) {
 			})
 				geometry.rotateX(-1.6)
 				const textMesh = new THREE.Mesh(geometry, white)
-				const groupNumber = group * 4
-				textMesh.position.set((xPos + 4), 0.5, (-9 + groupNumber))
+				textMesh.position.set((xPos - 3), 0.5, (-21.5 + (8 * group)))
 				textMesh.name = 'spacing-' + group
 				scene.add(textMesh)
 				render()
@@ -33,11 +33,10 @@ function signText(group, xPos, signImages) {
 	}
 }
 
-function signSpace(color, group) {
-	const bases = new THREE.Geometry()
+function signSpace(left, group) {
 	const faces = new THREE.Geometry()
 	const materials = [
-		color,
+		shadows,
 		workerSignMaterial,
 		flaggerSignMaterial,
 		leftSignMaterial,
@@ -53,28 +52,17 @@ function signSpace(color, group) {
 		lLaneMaterial,
 		fMenSignMaterial,
 		flagAheadSignMaterial,
-		closedSignMaterial,
-		shadows
+		closedSignMaterial
 	]
 
 	const signImages = signs[group]
-	const signBase = new THREE.CylinderGeometry(2.8, 2.8, 0.2, 4)
-	const signColor = new THREE.CylinderGeometry(3.2, 3.2, 0.2, 4)
-	let xPos = 12.5
+	const signBase = new THREE.CylinderGeometry(4, 4, 0.2, 4)
 
-	if (Math.abs(group % 2) !== 0) {
-		xPos -= 3
-	}
-
-	const groupNumber = group * 4
-	signBase.rotateY(1.6)
-	signBase.translate(xPos, 0.5, (-10 + groupNumber))
-	signColor.rotateY(1.6)
-	signColor.translate(xPos, 0.48, (-10 + groupNumber))
-
-	signText(group, xPos, signImages)
+//	signBase.rotateY(1.56)
+	signBase.translate((19 - left), 0.5, (-22 + (8 * group)))
 
 	let x
+	let position = 19 - left
 
 	for (let i = 0; i < signImages.length; i++) {
 		switch (signImages[i]) {
@@ -130,20 +118,19 @@ function signSpace(color, group) {
 				x = 6
 		}
 
-		bases.merge(signColor)
 		for (let j = 0; j < signBase.faces.length; j++) {
 			signBase.faces[j].materialIndex = x
 		}
 		faces.merge(signBase)
 
-		signBase.translate(-6.5, 0, 0)
-		signColor.translate(-6.5, 0, 0)
+		signBase.translate(8.2, 0, 0)
+		position += 8.2
 	}
 
-	const combinedBase = new THREE.Mesh(bases, color)
+	endSign(position, group)
+
 	const combinedMesh = new THREE.Mesh(faces, materials)
-	combinedBase.add(combinedMesh)
-	combinedBase.castShadow = true
-	combinedBase.name = 'signGroup-' + group
-	scene.add(combinedBase)
+	combinedMesh.castShadow = true
+	combinedMesh.name = 'signGroup-' + group
+	scene.add(combinedMesh)
 }

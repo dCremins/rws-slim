@@ -13,7 +13,7 @@ function slide(id) {
 		showing = 'none'
 	} else {
 		document.getElementById('button-' + id).classList.add('selected')
-		document.getElementById(id).style.top = '100px'
+		document.getElementById(id).style.top = '65px'
 		showing = id
 	}
 }

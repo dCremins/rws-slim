@@ -68,7 +68,7 @@ function arrowSign(color, group) {
 	hub.translate(-2.9, 0, 0)
 	accent.merge(hub)
 
-	const bulb = new THREE.CylinderGeometry(0.01, 0.1, 0.2, 32)
+	const bulb = new THREE.CylinderGeometry(0.1, 0.1, 0.2, 32)
 	bulb.rotateX(1.55)
 	bulb.translate(-0.4, 3.7, -16.1)
 	accent.merge(bulb)
@@ -121,13 +121,16 @@ function arrowSign(color, group) {
 	clickBox2.add(sign2)
 
 	clickBox.name = (group + '-arrow1')
-	clickBox.position.set(-1, 2.3, -16)
+	clickBox.rotation.set(-0.35, 0, -1.59)
+	clickBox.scale.set(1.5, 1.5, 1.5)
+	clickBox.position.set(-1, 0.8, -28)
 	scene.add(clickBox)
 	flaggers.push(clickBox)
 
 	clickBox2.name = (group + '-arrow2')
-	clickBox2.rotation.set(0, -0.8, 0)
-	clickBox2.position.set(10, 2.3, -16)
+	clickBox2.rotation.set(0.35, 0, 1.59)
+	clickBox2.scale.set(1.5, 1.5, 1.5)
+	clickBox2.position.set(10, 0.8, -28)
 	scene.add(clickBox2)
 	flaggers.push(clickBox2)
 }

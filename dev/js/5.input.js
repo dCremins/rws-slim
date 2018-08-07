@@ -58,143 +58,82 @@ const renderCones = (group, color) => {
 	clearCones(group, false)
 	const shadow = new THREE.Geometry()
 	const cone = coneGeometry.clone(true)
-	const stripe = stripeGeometry.clone(true)
 	const coneGroup = new THREE.Geometry()
-	const stripeGroup = new THREE.Geometry()
-	let initialX
+	let initialZ
+	let left = 0
 
 	switch (group) {
 		case 1:
-			initialX = -1
+			initialZ = -24
 			break
 		case 2:
-			initialX = -1.5
+			initialZ = -23.75
 			break
 		case 3:
-			initialX = -2
+			initialZ = -23.5
 			break
 		case 4:
-			initialX = -2.5
+			initialZ = -23.25
 			break
 		case 5:
-			initialX = -3
+			initialZ = -23
 			break
 		case 6:
-			initialX = -3.5
+			initialZ = -22.75
 			break
 		default:
 			break
 	}
-	const buffer = Number(document.getElementById('buffer-' + group).value) / 50
-	cone.translate(initialX, 0.75, -19)
-	coneGroup.merge(cone)
-	stripe.translate(initialX, 0.75, -19)
-	stripeGroup.merge(stripe)
+	const buffer = Number(document.getElementById('buffer-' + group).value) / 100
+	cone.translate(20, 0.75, initialZ)
 
-	let x = initialX
-	for (let i = initialX; i >= (initialX - buffer); i -= 2) {
-		cone.translate(-2, 0, 0)
+	for (let i = 0; i < (Math.floor(buffer * 6)); i++) {
+		cone.translate(-1.4, 0, 0)
 		coneGroup.merge(cone)
-		stripe.translate(-2, 0, 0)
-		stripeGroup.merge(stripe)
-		x -= 2
+		left += 1.4
 	}
 
-	const upstream = Number(document.getElementById('upstream-' + group).value) / 50
-	const height = 4.5
-	let cones = Math.pow(upstream, 2) + Math.pow(height, 2)
-	cones = Math.floor(Math.sqrt(cones)) / 2
-	let spacing = upstream / cones
-	let angle = height / cones
-	let y = 0
+	const upstream = Number(document.getElementById('upstream-' + group).value) / 100
+	const height = 4
+	let cones = Math.floor(upstream * 6)
+	let spacing = height / cones
+	let translate = 0
 
-	cone.translate(-2, 0, 0)
-	coneGroup.merge(cone)
-	stripe.translate(-2, 0, 0)
-	stripeGroup.merge(stripe)
-	x -= 2
-	let end = x - upstream
-
-	for (let a = x; a > (end); a -= spacing) {
-		cone.translate(-spacing, 0, angle)
+	for (let i = 0; i < cones; i++) {
+		cone.translate(-1.4, 0, spacing)
 		coneGroup.merge(cone)
-		stripe.translate(-spacing, 0, angle)
-		stripeGroup.merge(stripe)
-		y += angle
-		x -= spacing
+		left += 1.4
 	}
 
-	signSpace(color, group)
+	signSpace(left, group)
 
-	switch (group) {
-		case 1:
-			initialX = 10
-			break
-		case 2:
-			initialX = 10.5
-			break
-		case 3:
-			initialX = 11
-			break
-		case 4:
-			initialX = 11.5
-			break
-		case 5:
-			initialX = 12
-			break
-		case 6:
-			initialX = 12.5
-			break
-		default:
-			break
+	if (upstream) {
+		translate = -4
 	}
 
-	cone.translate(Math.abs(x) + initialX, 0, -y)
-	coneGroup.merge(cone)
-	stripe.translate(Math.abs(x) + initialX, 0, -y)
-	stripeGroup.merge(stripe)
+	cone.translate(left + 7, 0, translate)
 
-	x = initialX
-
-	const downBuff = Number(document.getElementById('downbuff-' + group).value) / 50
+	const downBuff = Number(document.getElementById('downbuff-' + group).value) / 100
 
 	if (downBuff && downBuff > 0) {
-		for (let i = initialX; i <= (initialX + downBuff); i += 2) {
-			cone.translate(2, 0, 0)
+		for (let i = 0; i < (downBuff * 6); i++) {
+			cone.translate(1.4, 0, 0)
 			coneGroup.merge(cone)
-			stripe.translate(2, 0, 0)
-			stripeGroup.merge(stripe)
-			x += 2
 		}
 	}
 
-	const downstream = Number(document.getElementById('downstream-' + group).value) / 50
+	const downstream = Number(document.getElementById('downstream-' + group).value) / 100
+	cones = Math.floor(downstream * 6)
+	spacing = height / cones
 
-	cone.translate(2, 0, 0)
-	coneGroup.merge(cone)
-	stripe.translate(2, 0, 0)
-	stripeGroup.merge(stripe)
-	x += 2
-	cones = Math.pow(downstream, 2) + Math.pow(height, 2)
-	cones = Math.floor(Math.sqrt(cones)) / 2
-	spacing = downstream / cones
-	angle = height / cones
-	y = 0
-	end = x + downstream
-
-	for (let a = x; a < (end); a += spacing) {
-		cone.translate(spacing, 0, angle)
+	for (let i = 0; i < cones; i++) {
+		cone.translate(1.4, 0, spacing)
 		coneGroup.merge(cone)
-		stripe.translate(spacing, 0, angle)
-		stripeGroup.merge(stripe)
-		y += angle
+		left += 1.4
 	}
 
 	const groupCones = new THREE.Mesh(coneGroup, color)
 	shadow.merge(coneGroup)
-	const stripes = new THREE.Mesh(stripeGroup, white)
-	groupCones.add(stripes)
-	shadow.merge(stripeGroup)
 	const coneShadow = new THREE.Mesh(shadow, shadows)
 	groupCones.add(coneShadow)
 
@@ -203,11 +142,9 @@ const renderCones = (group, color) => {
 	scene.add(groupCones)
 
 	slide('group-' + group)
-	flagger(group, color)
+	flagger(group, color, left)
 
 	arrowSign(color, group)
-
-	endSign(color, group)
 
 	render()
 }

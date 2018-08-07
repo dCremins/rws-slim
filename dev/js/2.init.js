@@ -13,7 +13,7 @@ function init() {
 
 function initCamera() {
 	camera = new THREE.PerspectiveCamera(60, ((window.innerWidth) / (window.innerHeight - 100)), 1, 100)
-	camera.position.set(0, 45, 25)
+	camera.position.set(0, 50, 0)
 }
 
 function initLights() {
@@ -35,7 +35,7 @@ function initLights() {
 
 function initRender() {
 	renderer = new THREE.WebGLRenderer({antialias: true})
-	renderer.setSize(window.innerWidth, window.innerHeight - 100)
+	renderer.setSize(window.innerWidth, window.innerHeight - 65)
 	renderer.setClearColor(0xCDF9FF, 1)
 	renderer.setPixelRatio(window.devicePixelRatio)
 	renderer.shadowMap.enabled = true

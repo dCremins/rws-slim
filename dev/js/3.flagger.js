@@ -1,4 +1,4 @@
-function flagger(group, color) {
+function flagger(group, color, position) {
 	const vest = new THREE.Geometry()
 	const stripes = new THREE.Geometry()
 	const pants = new THREE.Geometry()
@@ -275,22 +275,23 @@ function flagger(group, color) {
 	wood.scale(0.5, 0.5, 0.5)
 	wood.center()
 	wood.translate(-0.3, -0.3, -0.15)
-	const stick = new THREE.Mesh(wood, gray)
+	const stick = new THREE.Mesh(wood, palegray)
 	shadow.merge(wood)
 	clickBox.add(stick)
 
 	const shadowFlagger = new THREE.Mesh(shadow, shadows)
 	clickBox.add(shadowFlagger)
 
-	clickBox.rotation.set(0, -1.4, 0)
-	clickBox.position.set(-6, 1.48, -12)
+	clickBox.rotation.set(-1, 0, -1.6)
+	clickBox.scale.set(2.5, 2.5, 2.5)
+	clickBox.position.set((19 - position), 1, -28)
 	clickBox.name = (group + '-flagger1')
 	scene.add(clickBox)
 	flaggers.push(clickBox)
 
 	const clickBox2 = clickBox.clone(true)
-	clickBox2.rotation.set(0, 1.8, 0)
-	clickBox2.position.set(10, 1.48, -28)
+	clickBox2.rotation.set(-2, 0, 1.6)
+	clickBox2.position.set(25, 1, -28)
 	clickBox2.name = (group + '-flagger2')
 	scene.add(clickBox2)
 	flaggers.push(clickBox2)
