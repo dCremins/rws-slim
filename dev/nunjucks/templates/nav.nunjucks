@@ -4,4 +4,30 @@
 			<img class="cone" src="images/cone-{{group.id}}.png" />
 		</a>
 	{% endfor %}
+		<a id="control_group" class="button controls">
+			<img class="cone" src="images/control_expand.png" />
+		</a>
 </div>
+
+
+
+	<div id="camera_buttons" class="button camera">
+		<a id="control_left" class="button">
+			<img class="cone" src="images/control_left.png" />
+		</a>
+		<a id="control_up" class="button">
+			<img class="cone" src="images/control_up.png" />
+		</a>
+		<a id="control_down" class="button">
+			<img class="cone" src="images/control_down.png" />
+		</a>
+		<a id="control_right" class="button">
+			<img class="cone" src="images/control_right.png" />
+		</a>
+		<a id="control_in" class="button">
+			<img class="cone" src="images/control_in.png" />
+		</a>
+		<a id="control_out" class="button">
+			<img class="cone" src="images/control_out.png" />
+		</a>
+	</div>

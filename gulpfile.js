@@ -65,6 +65,13 @@ const paths = {
 
 const uglify = composer(uglifyjs, console)
 
+gulp.task('TESTjavascript', () => {
+	return gulp.src(paths.scripts.src, {base: './'})
+		.pipe(plumber())
+		.pipe(concat('bundled.min.js'))
+		.pipe(gulp.dest(paths.scripts.build))
+})
+
 gulp.task('javascript', () => {
 	return gulp.src(paths.scripts.src, {base: './'})
 		.pipe(compiler({
@@ -157,6 +164,8 @@ gulp.task('reload', done => {
 watch('dev/js/*.js', gulp.series('bundle', 'reload'))
 
 watch('dev/scss/*', gulp.series('sass', 'reload'))
+
+watch('dev/nunjucks/**/*', gulp.series('html', 'reload'))
 /* 7. Server */
 
 gulp.task('connect', done => {

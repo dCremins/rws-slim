@@ -3,7 +3,6 @@ function onDocumentMouseCancel(event) {
 	if (movingOn) {
 		//
 	} else {
-		controls.enabled = true
 		hovered = null
 		canv.style.cursor = 'auto'
 	}
@@ -14,7 +13,6 @@ function onDocumentTouchEnd(event) {
 	if (movingOn) {
 		//
 	} else {
-		controls.enabled = true
 		hovered = null
 		canv.style.cursor = 'auto'
 	}

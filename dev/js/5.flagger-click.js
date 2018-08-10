@@ -9,7 +9,6 @@ function onDocumentMouseDown(event) {
 	if (hovered) {
 		const flaggerMan = hovered.children
 		const flaggerMaterial = hovered.children[0].material
-		controls.enabled = false
 
 		if (movingOn) {
 			mouse.x = (((event.clientX - rect.left) / canv.clientWidth) * 2) - 1
@@ -64,7 +63,6 @@ function onDocumentTouchStart(event) {
 	const people = raycaster.intersectObjects(flaggers)
 	const ground = raycaster.intersectObject(objectPlane)
 	if (people.length > 0) {
-		controls.enabled = false
 		if (hovered !== people[0].object) {
 			hovered = people[0].object
 		}

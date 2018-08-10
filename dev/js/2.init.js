@@ -12,8 +12,9 @@ function init() {
 }
 
 function initCamera() {
-	camera = new THREE.PerspectiveCamera(60, ((window.innerWidth) / (window.innerHeight - 100)), 1, 100)
-	camera.position.set(0, 50, 0)
+	camera = new THREE.PerspectiveCamera(60, ((window.innerWidth) / (window.innerHeight - 65)), 1, 100)
+	camera.position.set(-5, 50, -3)
+	camera.lookAt(new THREE.Vector3(-5, 0, -3))
 }
 
 function initLights() {
@@ -40,9 +41,8 @@ function initRender() {
 	renderer.setPixelRatio(window.devicePixelRatio)
 	renderer.shadowMap.enabled = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
-	container.appendChild(renderer.domElement)
-	controls = new THREE.OrbitControls(camera, renderer.domElement)
-	controls.addEventListener('change', render)
+	document.getElementById('container').appendChild(renderer.domElement)
+
 
 	container.addEventListener('mousemove', onDocumentMouseMove, false)
 	container.addEventListener('mouseup', onDocumentMouseCancel, false)

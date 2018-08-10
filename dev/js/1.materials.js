@@ -1,7 +1,6 @@
 /* Variables */
 let scene
 let camera
-let controls
 let renderer
 let ambient
 let lightSource

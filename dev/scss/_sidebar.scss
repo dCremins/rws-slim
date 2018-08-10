@@ -310,3 +310,16 @@ button {
 	    display: none;
 	}
 }
+
+.camera {
+    box-sizing: border-box;
+    background-color: $white;
+    display: flex;
+    flex-flow: row wrap;
+    height: 65px;
+    right: 100%;
+    position: absolute;
+  	transition-duration: 1s;
+    width: 85.7%;
+    z-index: 10;
+}
