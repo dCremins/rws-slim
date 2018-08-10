@@ -7,7 +7,7 @@ function controler() {
 		controls = false
 		return
 	}
-		document.getElementById('camera_buttons').style.right = '1qc4.3%'
+		document.getElementById('camera_buttons').style.right = '14.3%'
 		document.getElementById('control_group').style.backgroundColor = 'white'
 		controls = true
 		return
